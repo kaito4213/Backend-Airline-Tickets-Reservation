@@ -1,0 +1,33 @@
+> Push your changes to remote
+
+git add -A (add all of the files)
+git add /dir/file_name (add a specific file)
+
+git commit -m 'with commit message'
+git commit (then using vim to finish your commit message)
+
+git push origin your_branch_name
+
+> Get changes from remote
+
+git pull (Usually use this. This should get all of the changes includes all of the remote branch and merge the remote code to your code)
+
+Good to know:
+git fetch (Get all of the code from remote but do not merge any changes to your code)
+git rebase (don't ever try it :-) it will destroy everything! )
+
+> Create a new branch
+git checkout -b new_branch_name
+git checkout new_branch_name (switch to another branch, but before that please use git status to confirm that you have commit all of your changes in this branch)
+git branch -D bad_branch (delete a branch, but you cannot delete a branch you are currently on)
+sorry.. I forget how to delete a remote branch... but definitely Github has a UI for it!
+
+> Merge 2 branches
+git merge branch1 (merge branch1’s code to current branch, usually merge master)
+
+> if you pushed a wrong file
+git revert
+
+> if you add a wrong file
+git reset file_name (not remember clearly)
+
