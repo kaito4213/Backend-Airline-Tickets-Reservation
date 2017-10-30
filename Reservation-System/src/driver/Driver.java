@@ -5,9 +5,9 @@ package driver;
 
 import java.util.Collections;
 
-import airport.Airport;
-import airport.Airports;
 import dao.ServerInterface;
+import model.airport.Airport;
+import model.airport.Airports;
 
 /**
  * @author blake
@@ -32,10 +32,43 @@ public class Driver {
 		
 		String teamName = args[0];
 		// Try to get a list of airports
+		
+		while(true) {
+			
+			
+			
+		}
+		
+		
+		// TODO: use dao object to do this instead of server interface
+		// use DaoAirport
+		
+		// array -> ['start', 'dest']
+		// new SearchController(start, dest) -> getSearchResult();
+		
+		/**
+		 * if(cmd == search) {
+		 *   searchResults = getSearchResult();
+		 * }
+		 * 
+		 * 
+		 * stop............
+		 * 
+		 * if(reservation) {
+		 *   how to get result
+		 * }
+		 * 
+		 * 
+		 * 
+		 */
+		
+		/*
 		Airports airports = ServerInterface.INSTANCE.getAirports(teamName);
 		Collections.sort(airports);
 		for (Airport airport : airports) {
 			System.out.println(airport.toString());
 		}
+		*/
+		
 	}
 }
