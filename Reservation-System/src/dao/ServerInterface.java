@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import model.airport.Airports;
+import model.flight.*;
 import dao.DaoAirport;
 import utils.QueryFactory;
 
@@ -80,6 +81,62 @@ public enum ServerInterface {
 		xmlAirports = result.toString();
 		airports = DaoAirport.addAll(xmlAirports);
 		return airports;
+		
+	}
+	
+	/**
+	 * Return a collection of all the airports from server
+	 * 
+	 * Retrieve the list of airports available to the specified ticketAgency via HTTPGet of the server
+	 * 
+	 * @param teamName identifies the name of the team requesting the collection of airports
+	 * @return collection of Airports from server
+	 */
+	public Flights getFlights (String teamName, String departureAirport, String departureDate) {
+
+		URL url;
+		HttpURLConnection connection;
+		BufferedReader reader;
+		String line;
+		StringBuffer result = new StringBuffer();
+		
+		String xmlFlights;
+		Flights flights;
+
+		try {
+			/**
+			 * Create an HTTP connection to the server for a GET 
+			 */
+			url = new URL(mUrlBase + QueryFactory.getFlights(teamName, departureAirport, departureDate));
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("User-Agent", teamName);
+
+			/**
+			 * If response code of SUCCESS read the XML string returned
+			 * line by line to build the full return string
+			 */
+			int responseCode = connection.getResponseCode();
+			if (responseCode >= HttpURLConnection.HTTP_OK) {
+				InputStream inputStream = connection.getInputStream();
+				String encoding = connection.getContentEncoding();
+				encoding = (encoding == null ? "UTF-8" : encoding);
+
+				reader = new BufferedReader(new InputStreamReader(inputStream));
+				while ((line = reader.readLine()) != null) {
+					result.append(line);
+				}
+				reader.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		xmlFlights = result.toString();
+		flights = DaoFlight.addAll(xmlFlights);
+		return flights;
 		
 	}
 	

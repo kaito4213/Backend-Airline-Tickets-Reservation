@@ -1,5 +1,9 @@
 package model.flight;
 
-public class Flights {
+import java.util.ArrayList;
 
+public class Flights extends ArrayList<Flight> {
+	private static final long serialVersionUID = 1L;
+	
+	
 }
