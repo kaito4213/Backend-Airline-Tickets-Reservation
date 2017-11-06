@@ -16,7 +16,7 @@ public class SearchFlight {
 	private String mArrivalAirportCode;			// Three character code of the arrival airport
 	private String mDepartureDate;				// date of departure
 	private String mSeatPreference;				// preference of seat class on the airplane
-	private int mStopOver;						// number of stopOver from departure to arrival
+	private String mStopOver;						// number of stopOver from departure to arrival
 	
 	/**
 	 * Default constructor
@@ -163,7 +163,7 @@ public class SearchFlight {
 	 * @param mStopOver Number of stopOver from departure to arrival
 	 */
 	
-	public void seatPreference (int mStopOver) {
+	public void stopOver (String mStopOver) {
 		
 	}
 	
@@ -172,7 +172,7 @@ public class SearchFlight {
 	 * 
 	 * @return number of stopOver
 	 */
-	public int stopOver () {
+	public String stopOver () {
 		return mStopOver;
 	}
 
@@ -200,4 +200,5 @@ public class SearchFlight {
 	public List<Flight> search () {
 		return null;
 	}
+	
 }

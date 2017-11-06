@@ -1,48 +1,37 @@
 package controller;
-import model.flight.Flights;
-import model.search.*;
-import view.*;
 
+import model.search.SearchFlight;
+import model.search.SearchFlights;
+import view.InputView;
+import view.SearchResultView;
+import view.ReservationView;
+
+/**
+ * TODO: valid methods
+ *
+ */
 public class SearchController {
 	
-	private String mDepartureAirportCode;		// Three character code of the departure airport
-	private String mArrivalAirportCode;			// Three character code of the arrival airport
-	private String mDepartureDate;				// date of departure
-	private String mSeatPreference;				// preference of seat class on the airplane
-	private int mStopOver;						// number of stopOver from departure to arrival
-	private SearchResultView searchResultView;
-	private InputView inputView;
-	private SearchFlight searchModel;					// new search
+	private InputView input;		//user interface which will get all the search information from user
+	private SearchResultView searchResult;		//user interface which will display the search result to user	
+	private SearchFlight search;			// new search
+	private ReservationView reservation;
 	
 	public SearchController() {
+		input = new InputView();
+		input.setUserSearchInput();
 		
-		SearchFlight searchModel = new SearchFlight(mDepartureAirportCode, mArrivalAirportCode, mDepartureDate,
-				mSeatPreference, mStopOver);
+		search = new SearchFlight();
+		search.departureAirportCode(input.getDepartureAirportCode());
+		search.arrivalAirportCode(input.getArrivalAirportCode());
+		search.departureDate(input.getDepartureDate());
+		search.seatPreference(input.getSeatPreference());
+		search.stopOver(input.getHasStopOver());
+		
+		// search
+		
+		searchResult = new SearchResultView();
+		searchResult.showSearchResult(search.toString());
 	}
-	
-	//check if the input attributes are valid
-	private boolean isValid() {
-		return true;
-	}
-	
-	/***
-	 * dest
-	 * start
-	 * 
-	 * if bad dest -> 12345678 X wrong
-	 * validate (dest, start)
-	 * 
-	 * m = new SearchModel(controller.start, controller.dest)
-	 * 
-	 * result = m.search();
-	 * 
-	 * 
-	 * view = new SearchResultView(result)
-	 * view.showResult();
-	 * 
-	 * return searchResults
-	 * 
-	 * 
-	 */
 	
 }
