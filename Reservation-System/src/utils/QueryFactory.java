@@ -46,6 +46,28 @@ public class QueryFactory {
 				+ "&day=" + date;
 	}
 	
+	/**
+	 * Return a query string that can be passed to HTTP URL to request list of airplanes
+	 * 
+	 * @param teamName is the name of the team to specify the data copy on server
+	 * @return the query String which can be appended to URL to form HTTP GET request
+	 */
+	public static String getAirplanes(String teamName) {
+		return "?team=" + teamName + "&action=list&list_type=airplanes" + 
+				"";
+	}
+	
+	/**
+	 * Get timezone per lat/long
+	 * 
+	 * @param latitude is the latitude of the airport
+	 * @param longitude is the longitude of the airport
+	 * @return the String written to HTTP POST to lock server database 
+	 */
+	public static String getTimeZone(double latitude, double longitude) {
+		return "https://maps.googleapis.com/maps/api/timezone/xml?location=" + latitude + "," + 
+	           longitude + "&timestamp=1331161200&key=AIzaSyAA4hXXyr4fzABw0Kj66PcsCU5uAGkc2Fw";
+	}
 	
 	public static String lock (String teamName) {
 		return "team=" + teamName + "&action=lockDB";

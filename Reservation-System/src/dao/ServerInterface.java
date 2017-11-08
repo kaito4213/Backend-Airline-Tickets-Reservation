@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import model.airplane.Airplanes;
+import model.airport.Airport;
 import model.airport.Airports;
 import model.flight.*;
 import dao.DaoAirport;
@@ -38,48 +40,24 @@ public enum ServerInterface {
 	 */
 	public Airports getAirports (String teamName) {
 
-		URL url;
-		HttpURLConnection connection;
-		BufferedReader reader;
-		String line;
-		StringBuffer result = new StringBuffer();
-		
-		String xmlAirports;
+		StringBuffer airportResult, timeZoneResult;
+		String xmlAirports, xmlAirportTimeZone;
 		Airports airports;
 
-		try {
-			/**
-			 * Create an HTTP connection to the server for a GET 
-			 */
-			url = new URL(mUrlBase + QueryFactory.getAirports(teamName));
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("User-Agent", teamName);
-
-			/**
-			 * If response code of SUCCESS read the XML string returned
-			 * line by line to build the full return string
-			 */
-			int responseCode = connection.getResponseCode();
-			if (responseCode >= HttpURLConnection.HTTP_OK) {
-				InputStream inputStream = connection.getInputStream();
-				String encoding = connection.getContentEncoding();
-				encoding = (encoding == null ? "UTF-8" : encoding);
-
-				reader = new BufferedReader(new InputStreamReader(inputStream));
-				while ((line = reader.readLine()) != null) {
-					result.append(line);
-				}
-				reader.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+		// Get Airports
+		
+		airportResult = trySetup(teamName, "airport", null);
+		xmlAirports = airportResult.toString();
+		airports = Dao.addAllAirports(xmlAirports);
+		
+		// get time zones
+		for (Airport airport : airports) {
+			timeZoneResult = trySetup("","timezone", airport);
+			xmlAirportTimeZone = timeZoneResult.toString();
+			Dao.addAirportTimeZone(xmlAirportTimeZone, airport);
 		}
-
-		xmlAirports = result.toString();
-		airports = DaoAirport.addAll(xmlAirports);
+		//
+		
 		return airports;
 		
 	}
@@ -138,6 +116,96 @@ public enum ServerInterface {
 		flights = DaoFlight.addAll(xmlFlights);
 		return flights;
 		
+	}
+	
+	/**
+	 * Return a collection of all the airplanes from server
+	 * 
+	 * Retrieve the list of airplanes available to the specified ticketAgency via HTTPGet of the server
+	 * 
+	 * @param teamName identifies the name of the team requesting the collection of airplanes
+	 * @return collection of Airplanes from server
+	 */
+	public Airplanes getAirplanes (String teamName) {
+
+		StringBuffer result;
+		String xmlAirplanes;
+		Airplanes airplanes;
+
+		result = trySetup(teamName,"airplane",null);
+
+		xmlAirplanes = result.toString();
+		airplanes = Dao.addAllAirplanes(xmlAirplanes);
+		return airplanes;
+		
+	}
+	
+	/**
+	 * Return a string buffer to be parsed by Dao
+	 * 
+	 * Retrieve the list of airplanes available to the specified ticketAgency via HTTPGet of the server
+	 * 
+	 * @param teamName identifies the name of the team requesting the collection of airplanes, airports, or flights
+	 * @param type identifies if airplane, airport, or flight will be returned
+	 * @return StringBuffer result
+	 */
+	
+	public StringBuffer trySetup (String teamName, String type, Airport airport) {
+		URL url;
+		HttpURLConnection connection;
+		BufferedReader reader;
+		String line;
+		StringBuffer result = new StringBuffer();
+		
+		try {
+			/**
+			 * Create an HTTP connection to the server for a GET 
+			 * for flight, airplane, airport, or timezone
+			 */
+			if (type == "airplane") {
+				url = new URL(mUrlBase + QueryFactory.getAirplanes(teamName));
+			}
+			else if (type == "flight") {
+				url = new URL(mUrlBase + QueryFactory.getFlights(teamName));
+			}
+			else if (type == "airport") {
+				url = new URL(mUrlBase + QueryFactory.getAirports(teamName));
+			}
+			else if (type == "timezone") {
+				String query = QueryFactory.getTimeZone(airport.latitude(), airport.longitude());
+				url = new URL(query);
+			}
+			// return nothing if type is not airplane, flight, airport, or timezone
+			else {
+				return null;
+			}
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			if (type != "timezone") connection.setRequestProperty("User-Agent", teamName);
+
+			/**
+			 * If response code of SUCCESS read the XML string returned
+			 * line by line to build the full return string
+			 */
+			int responseCode = connection.getResponseCode();
+			if (responseCode >= HttpURLConnection.HTTP_OK) {
+				InputStream inputStream = connection.getInputStream();
+				String encoding = connection.getContentEncoding();
+				encoding = (encoding == null ? "UTF-8" : encoding);
+
+				reader = new BufferedReader(new InputStreamReader(inputStream));
+				while ((line = reader.readLine()) != null) {
+					result.append(line);
+				}
+				reader.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	/**

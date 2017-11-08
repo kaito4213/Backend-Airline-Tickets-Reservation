@@ -13,6 +13,12 @@ import utils.Saps;
  * XML received from the server to Java primitives. Attributes are accessed via getter and 
  * setter methods.
  * 
+ * @author blake
+ * @version 1.2
+ * @since 2016-02-24
+ * 
+ * 
+ *
  */
 public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	
@@ -23,6 +29,7 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	private String mCode;              // Three character code of the airport
 	private double mLatitude;          // Latitude of airport in decimal format
 	private double mLongitude;         // Longitude of the airport in decimal format
+	private String mTimeZone;		   // Time zone of airport
 	
 	/**
 	 * Default constructor
@@ -114,7 +121,8 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 		sb.append(mCode).append(", ");
 		sb.append("(").append(String.format("%1$.3f", mLatitude)).append(", ");
 		sb.append(String.format("%1$.3f", mLongitude)).append("), ");
-		sb.append(mName);
+		sb.append(mName).append(", ");
+		sb.append("Time Zone: ").append(mTimeZone);
 
 		return sb.toString();
 	}
@@ -218,6 +226,25 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	 */
 	public double longitude () {
 		return mLongitude;
+	}
+	
+	/**
+	 * Set the time zone for the airport
+	 * 
+	 * @param timeZone The timezone of the airport 
+	 * @throws IllegalArgumentException is timezone is invalid
+	 */
+	public void timeZone (String timeZone) {
+		mTimeZone = timeZone;
+	}
+	
+	/**
+	 * get the timezone for the airport
+	 * 
+	 * @return The timezone of the airport
+	 */
+	public String timezone () {
+		return mTimeZone;
 	}
 
 	/**
