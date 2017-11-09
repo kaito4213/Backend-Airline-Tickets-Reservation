@@ -82,6 +82,24 @@ public class QueryFactory {
 	public static String unlock (String teamName) {
 		return "team=" + teamName + "&action=unlockDB";
 	}
-	
+
+
+	/**
+	 * Update the server database with flights to be updated
+	 * 
+	 * @param teamName is the name of the team holding the lock
+	 * @return the String written to the HTTP POST to update flights on server
+	 */
+	public static String updateFlights (String teamName) {
+		// hardcoded flight and class, to be updated
+		// also, a "for" loop will be needed to go through flights linked to trip,
+		// between 1 and 6
+		int flightNum = 5017;
+		String firstClassOrCoach = "FirstClass";
+		return "team=" + teamName + "&action=buyTickets&flightData=" + 
+				"<Flights>" + 
+				"	<Flight number=\"" + flightNum + "\" seating=\"" + firstClassOrCoach + "\"/>" + 
+				"</Flights>";
+	}
 
 }

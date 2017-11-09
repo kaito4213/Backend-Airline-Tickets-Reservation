@@ -310,4 +310,58 @@ public enum ServerInterface {
 		}
 		return true;
 	}
+
+	/**
+	 * Update server with flights to be reserved and if coach or first class
+	 * 
+	 * @param teamName is the name of the team holding the lock
+	 * @return true if the update was successful
+	 */
+	public boolean postFlights (String teamName) {
+		URL url;
+		HttpURLConnection connection;
+		
+		try {
+			url = new URL(mUrlBase);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			
+			String params = QueryFactory.updateFlights(teamName);
+			
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+			
+			DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
+			writer.writeBytes(params);
+			writer.flush();
+			writer.close();
+		    
+			int responseCode = connection.getResponseCode();
+			System.out.println("\nSending 'POST' to update database");
+			System.out.println(("\nResponse Code : " + responseCode));
+
+			if (responseCode >= HttpURLConnection.HTTP_OK) {
+				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String line;
+				StringBuffer response = new StringBuffer();
+
+				while ((line = in.readLine()) != null) {
+					response.append(line);
+				}
+				in.close();
+
+				System.out.println(response.toString());
+			}
+		}
+		catch (IOException ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 }
