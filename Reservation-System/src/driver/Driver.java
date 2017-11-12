@@ -5,9 +5,14 @@ package driver;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 
+import controller.SearchController;
 import dao.ServerInterface;
 import model.airport.Airport;
 import model.airport.Airports;
@@ -37,62 +42,47 @@ public class Driver {
 		}
 		*/
 		
-		Scanner scan= new Scanner(System.in);
-		System.out.println("please input your team name: ");
-		String teamName = scan.nextLine();
-		System.out.println("please input your departure airport: ");
-		String departureAirport = scan.nextLine();
-		System.out.println("please input your departure date in the format of yyyy_mm_dd: ");
-		String departureDate = scan.nextLine();
-		
-		//String teamName = args[0];
-		//String teamName = "Muse";
-		// Try to get a list of airports
-		
-		// Try to get a list of airports
-			Airports airports = ServerInterface.INSTANCE.getAirports(teamName);
-			Collections.sort(airports);
-			for (Airport airport : airports) {
-				System.out.println(airport.toString());
-			}
-
-			// Try to get a list of flights
-			Flights flights = ServerInterface.INSTANCE.getFlights(teamName, departureAirport, departureDate);
-			//Collections.sort(flights);
-			for (Flight flight : flights) {
-				System.out.println(flight.toString());
-			}
-		
-		
-		// TODO: use dao object to do this instead of server interface
-		// use DaoAirport
-		
-		// array -> ['start', 'dest']
-		// new SearchController(start, dest) -> getSearchResult();
-		
+		//SearchController sc = new SearchController();
 		/**
-		 * if(cmd == search) {
-		 *   searchResults = getSearchResult();
-		 * }
-		 * 
-		 * 
-		 * stop............
-		 * 
-		 * if(reservation) {
-		 *   how to get result
-		 * }
-		 * 
-		 * 
-		 * 
-		 */
+		List<Flights> result = new ArrayList<Flights>();
+		int stop = 0;
+		Flights flights = ServerInterface.INSTANCE.getFlights("Muse", "BOS", "2017_12_10");
+		Queue<Flights> flightsQ = new LinkedList<Flights>();
 		
-		/*
-		Airports airports = ServerInterface.INSTANCE.getAirports(teamName);
-		Collections.sort(airports);
-		for (Airport airport : airports) {
-			System.out.println(airport.toString());
+		for (Flight flight : flights) {
+			Flights newFlights = new Flights();
+			newFlights.add(flight);
+			
+			if (newFlights.get(newFlights.size() - 1).getArrivalAirport().equals("JFK")){
+				result.add(newFlights);
+			} else {
+				flightsQ.add(newFlights);
+			}
 		}
-		*/
+		System.out.println("result size: " + result.size() + ", " + flightsQ.size());
 		
+		while(stop < 2 && !flightsQ.isEmpty()) {
+			Flights f = flightsQ.poll();
+			for (Flight fl : f) {
+				System.out.println("current pop out: " + fl);
+			}
+			
+			String nextDeparture = f.get(f.size() - 1).getArrivalAirport();
+			String date = f.get(f.size() - 1).getArrivalAirportTime();
+			System.out.println("next dept: " + nextDeparture + "date: " + date);
+			Flights nextFlights = ServerInterface.INSTANCE.getFlights("Muse", nextDeparture, date);
+			
+			for (Flight flight : nextFlights) {
+				f.add(flight);
+				if (f.get(f.size() - 1).getArrivalAirport().equals("JFK")){
+					result.add(f);
+				} else {
+					flightsQ.add(f);
+				}
+				f.remove(f.size() - 1);
+			}
+			stop++;
+		}
+	*/
 	}
 }

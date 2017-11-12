@@ -119,13 +119,6 @@ public class DaoFlight {
 		coachBooked = Integer.parseInt(getCharacterDataFromElement(elementCoach));
 		coachPrice = elementCoach.getAttributeNode("Price").getValue();
 		
-		
-		// <Seating>
-		//<FirstClass Price="$67.11">9</FirstClass>
-		//<Coach Price="$18.79">85</Coach>
-	//</Seating>
-
-
 		/**
 		 * Update the Airport object with values from XML node
 		 */

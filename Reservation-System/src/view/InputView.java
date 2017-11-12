@@ -9,6 +9,7 @@ public class InputView {
 	private String inputDepartureAirportCode;		// Three character code of the departure airport
 	private String inputArrivalAirportCode;			// Three character code of the arrival airport
 	private String inputDepartureDate;				// date of departure
+	private String inputReturnDate;					// date of return
 	private String inputSeatPreference;				// preference of seat class on the airplane
 	private String inputHasStopOver;				// if there is stopOver from departure to arrival
 	private String inputIsRoundTrip;				// 
@@ -26,6 +27,7 @@ public class InputView {
 		inputDepartureAirportCode = "";
 		inputArrivalAirportCode = "";
 		inputDepartureDate = "";
+		inputReturnDate = "";
 		inputSeatPreference = "";
 		inputHasStopOver = "";
 		inputIsRoundTrip = "";
@@ -55,8 +57,14 @@ public class InputView {
 		hasStopOver(input);
 		
 		System.out.println("Do you want a round trip(yes/no): ");
-		input = scan.nextLine();
-		isRoundTrip(input);
+		String round = scan.nextLine();
+		isRoundTrip(round);
+		
+		if (round.equals("yes")) {
+			System.out.println("please input your return date in the format of yyyy_mm_dd: ");
+			input = scan.nextLine();
+			returnDate(input);
+		}
 		
 		scan.close();
 	}
@@ -113,6 +121,23 @@ public class InputView {
 	 */
 	public String getDepartureDate () {
 		return inputDepartureDate;		
+	}
+	
+	/**
+	 * set the input of return date
+	 * 
+	 * @param departureDate The input of departure date
+	 */
+	public void returnDate (String returnDate) {
+		inputReturnDate = returnDate;		
+	}
+	
+	/**
+	 * get the input of return date
+	 * 
+	 */
+	public String getReturnDate () {
+		return inputReturnDate;		
 	}
 	
 	/**
