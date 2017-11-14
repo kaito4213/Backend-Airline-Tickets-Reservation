@@ -110,13 +110,14 @@ public class Flight {
 		sb.append(departureAirportTime).append("\n ");
 		sb.append(arrivalAirport).append(", ");
 		sb.append(arrivalAirportTime).append("\n ");
+		/**
 		sb.append("(Flight time: ").append(flightTime).append(", ");
 		sb.append("Airplane model: ").append(airplane).append(", ");
 		sb.append("# First Class Booked: ").append(firstClassBooked).append(", ");
 		sb.append("First Class Price: ").append(firstClassPrice).append(", ");
 		sb.append("# Coach Booked: ").append(coachBooked).append(", ");
 		sb.append("Coach Price: ").append(coachPrice).append(")");
-
+		*/
 		return sb.toString();
 	}
 	

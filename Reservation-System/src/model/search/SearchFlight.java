@@ -1,10 +1,12 @@
 package model.search;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
+import java.util.TimeZone;
 import java.util.Date;
 
 import dao.ServerInterface;
@@ -106,12 +108,48 @@ public class SearchFlight {
 		
 	}
 	
-	//DFS
-	public List<Flights> search () {
-		List<Flights> result = new ArrayList<Flights>();
+	/**
+	 * This method converts a date string from "yyyy MMM dd HH:mm z" format to "yyyy_MM_dd" format.
+	 * 
+	 * @param date String in "yyyy MMM dd HH:mm z" format.
+	 * @return String in "yyyy_MM_dd" format.
+	 * @throws ParseException if the date parsing fails
+	 */
+	public String dateFormatter(String date) throws ParseException{
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		SimpleDateFormat departureDateFormatter = new SimpleDateFormat("yyyy_MM_dd");
+		departureDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String departuredate = departureDateFormatter.format(formatter.parse(date));
+		return departuredate;
+	}
+	
+	/**
+	 * This method copy current Flights object to a new Flights object and add new flight into the copy one
+	 * 
+	 * @param flights current flights object
+	 * @param newFlight new flight
+	 * @return result the copied flights object which adds the new flight
+	 */
+	public Flights addFlight(Flights flights, Flight newFlight){
+		Flights result = new Flights();
+		for (Flight f : flights){
+			result.add(f);
+		}
+		result.add(newFlight);
+		return result;
+	}
+	
+	/**
+	 * This method search all the flights that satisfies user requirement
+	 * 
+	 * @return list of Flights depart from mDepartureAirportCode and arrive at mArrivalAirportCode on mDepartureDate
+	 */
+	public List<Flights> search () throws ParseException {
 		int stop = 0;
+		List<Flights> result = new ArrayList<Flights>();
 		Flights flights = ServerInterface.INSTANCE.getFlights(mTeamName, mDepartureAirportCode, mDepartureDate);
-		Queue<Flights> flightsQ = new LinkedList<Flights>();
+		Queue<Flights> currentFlightsQ = new LinkedList<Flights>();
 		
 		for (Flight flight : flights) {
 			Flights newFlights = new Flights();
@@ -120,28 +158,37 @@ public class SearchFlight {
 			if (newFlights.get(newFlights.size() - 1).getArrivalAirport().equals(mArrivalAirportCode)){
 				result.add(newFlights);
 			} else {
-				flightsQ.add(newFlights);
+				currentFlightsQ.add(newFlights);
 			}
 		}
 		
-		while(stop < maxStopOver && !flightsQ.isEmpty()) {
-			Flights f = flightsQ.poll();
-			String nextDeparture = f.get(f.size() - 1).getArrivalAirport();
-			String date = f.get(f.size() - 1).getArrivalAirportTime();
-			Flights nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+		//search with stop over
+		while(stop < maxStopOver && !currentFlightsQ.isEmpty()) {
+			Queue<Flights> nextFlightsQ = new LinkedList<Flights>();
 			
-			for (Flight flight : nextFlights) {
-				f.add(flight);
-				if (f.get(f.size() - 1).getArrivalAirport().equals(mArrivalAirportCode)){
-					result.add(f);
-				} else {
-					flightsQ.add(f);
+			while(!currentFlightsQ.isEmpty()) {
+				Flights currentFlights = currentFlightsQ.poll();			
+				String nextDeparture = currentFlights.get(currentFlights.size() - 1).getArrivalAirport();
+				String date = dateFormatter(currentFlights.get(currentFlights.size() - 1).getArrivalAirportTime());	
+				Flights nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+					
+				for (Flight flight : nextFlights) {					
+
+					if (flight.getArrivalAirport().equals(mArrivalAirportCode)){
+						result.add(addFlight(currentFlights, flight));				
+					} else {
+						nextFlightsQ.add(addFlight(currentFlights, flight));
+					}			
 				}
-				f.remove(f.size() - 1);
-			}	
-			stop++;
+			 }
+			 
+			currentFlightsQ = nextFlightsQ;
+			stop++;		
 		}
 		
+		for (Flights f : result) {
+			System.out.println(f);
+		}
 		return result;
 	}
 	

@@ -1,5 +1,7 @@
 package controller;
 
+import java.text.ParseException;
+
 import model.search.SearchFlight;
 import model.search.SearchFlights;
 import view.InputView;
@@ -17,7 +19,7 @@ public class SearchController {
 	private SearchFlights search;			// new search
 	private ReservationView reservation;
 	
-	public SearchController() {
+	public SearchController() throws ParseException {
 		input = new InputView();
 		input.setUserSearchInput();
 		

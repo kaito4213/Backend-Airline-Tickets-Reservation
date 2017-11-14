@@ -1,5 +1,6 @@
 package model.search;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -234,7 +235,7 @@ public class SearchFlights {
 		return isRoundTrip;
 	}
 	
-	public List<List<Flights>> getSearchResult() {
+	public List<List<Flights>> getSearchResult() throws ParseException {
 		List<List<Flights>> result = new ArrayList<List<Flights>>();
 		SearchFlight goFlight = new SearchFlight(mDepartureAirportCode, mArrivalAirportCode, mDepartureDate, mSeatPreference, isStopOver);
 		result.add(goFlight.search());
