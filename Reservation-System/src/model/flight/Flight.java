@@ -57,21 +57,67 @@ public class Flight {
     public void setCoachPrice(String newValue) {
     	coachPrice = newValue;
     }
+    
+    public int getNumber() {
+		return number;
+	}
+
+	public int getFlightTime() {
+		return flightTime;
+	}
+
+	public String getAirplane() {
+		return airplane;
+	}
+
+	public String getDepartureAirport() {
+		return departureAirport;
+	}
+
+	public String getDepartureAirportTime() {
+		return departureAirportTime;
+	}
+
+	public String getArrivalAirport() {
+		return arrivalAirport;
+	}
+
+	public String getArrivalAirportTime() {
+		return arrivalAirportTime;
+	}
+
+	public int getFirstClassBooked() {
+		return firstClassBooked;
+	}
+
+	public int getCoachBooked() {
+		return coachBooked;
+	}
+
+	public String getFirstClassPrice() {
+		return firstClassPrice;
+	}
+
+	public String getCoachPrice() {
+		return coachPrice;
+	}
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(number).append(", ");
 		sb.append(departureAirport).append(", ");
-		sb.append(departureAirportTime).append(", ");
+		sb.append(departureAirportTime).append("\n ");
 		sb.append(arrivalAirport).append(", ");
-		sb.append(arrivalAirportTime).append(", ");
+		sb.append(arrivalAirportTime).append("\n ");
+		/**
 		sb.append("(Flight time: ").append(flightTime).append(", ");
 		sb.append("Airplane model: ").append(airplane).append(", ");
 		sb.append("# First Class Booked: ").append(firstClassBooked).append(", ");
 		sb.append("First Class Price: ").append(firstClassPrice).append(", ");
 		sb.append("# Coach Booked: ").append(coachBooked).append(", ");
 		sb.append("Coach Price: ").append(coachPrice).append(")");
-
+		*/
 		return sb.toString();
 	}
 	
@@ -101,5 +147,4 @@ public class Flight {
 		
 		return true;
 	}
-        
 }
