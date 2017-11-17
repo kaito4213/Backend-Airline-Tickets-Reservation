@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import java.util.TimeZone;
 import java.util.Date;
@@ -117,8 +118,8 @@ public class SearchFlight {
 	 */
 	public String dateFormatter(String date) throws ParseException{
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
-		SimpleDateFormat departureDateFormatter = new SimpleDateFormat("yyyy_MM_dd");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z", Locale.US);
+		SimpleDateFormat departureDateFormatter = new SimpleDateFormat("yyyy_MM_dd",Locale.US);
 		departureDateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String departuredate = departureDateFormatter.format(formatter.parse(date));
 		return departuredate;
