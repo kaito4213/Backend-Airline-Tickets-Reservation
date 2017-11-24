@@ -1,7 +1,9 @@
 package driver;
 
 import java.text.ParseException;
+
 import controller.SearchController;
+import dao.ServerInterface;
 
 
 public class Driver {
@@ -14,7 +16,15 @@ public class Driver {
 			return;
 		}
 		*/
-		SearchController sc = new SearchController();
+		
+		// import Airports
+		ServerInterface.INSTANCE.getAirports("Muse");
+		
+		// Try to get a list of airplanes
+		ServerInterface.INSTANCE.getAirplanes("Muse");
+		
+		// Begin search
+		new SearchController();
 	}
 }
 

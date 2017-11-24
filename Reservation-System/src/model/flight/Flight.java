@@ -1,5 +1,12 @@
 package model.flight;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.GregorianCalendar;
+import model.airport.Airport;
+import model.airport.Airports;
+
 public class Flight {
 	
 	private int number;
@@ -102,14 +109,70 @@ public class Flight {
 		return coachPrice;
 	}
 
+	public String getLocalDepTime() throws ParseException {
+		Airport depAirport = null;
+		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		
+		calendar.setTime(calendar.getTime());
+	    System.out.println(calendar.getTime());
+		
+		for(Airport airport : Airports.getInstance()) {
+			String name = airport.code();
+	        if(name.equals(departureAirport)) {
+	            depAirport = airport;
+	            break;
+	        }
+	    }
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		formatter.setTimeZone(TimeZone.getTimeZone(depAirport.timezone()));
+		String time = formatter.format(calendar.getTime());
+		return time;
+	}
+
+	public String getLocalArrTime() throws ParseException {
+		Airport arrAirport = null;
+		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		
+		calendar.setTime(calendar.getTime());
+	    System.out.println(calendar.getTime());
+		
+		for(Airport airport : Airports.getInstance()) {
+			String name = airport.code();
+	        if(name.equals(departureAirport)) {
+	            arrAirport = airport;
+	            break;
+	        }
+	    }
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		formatter.setTimeZone(TimeZone.getTimeZone(arrAirport.timezone()));
+		String time = formatter.format(calendar.getTime());
+		return time;
+	}
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(number).append(", ");
 		sb.append(departureAirport).append(", ");
-		sb.append(departureAirportTime).append("\n ");
+		try {
+			sb.append(getLocalDepTime()).append("\n ");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sb.append(arrivalAirport).append(", ");
-		sb.append(arrivalAirportTime).append("\n ");
+		try {
+			sb.append(getLocalArrTime()).append("\n ");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/**
 		sb.append("(Flight time: ").append(flightTime).append(", ");
 		sb.append("Airplane model: ").append(airplane).append(", ");

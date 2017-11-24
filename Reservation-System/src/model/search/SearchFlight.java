@@ -10,8 +10,6 @@ import java.util.TimeZone;
 import java.util.Date;
 
 import dao.ServerInterface;
-import model.airport.Airport;
-import model.airport.Airports;
 import model.flight.Flight;
 import model.flight.Flights;
 /**
@@ -27,7 +25,7 @@ public class SearchFlight {
 	private String mSeatPreference;				// preference of seat class on the airplane
 	private boolean isStopOver;					// number of stopOver from departure to arrival
 	private final String mTeamName = "Muse";
-	private final int maxStopOver = 2;
+	private final int maxStopOver = 1;
 	
 	/**
 	 * Default constructor
@@ -187,7 +185,10 @@ public class SearchFlight {
 		}
 		
 		for (Flights f : result) {
-			System.out.println(f);
+			//System.out.println(f);
+			for (Flight flight : f) {
+				System.out.println(flight.toString());
+			}
 		}
 		return result;
 	}

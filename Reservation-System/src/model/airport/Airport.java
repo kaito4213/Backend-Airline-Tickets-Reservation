@@ -4,6 +4,7 @@
 package model.airport;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 import utils.Saps;
 
@@ -417,6 +418,125 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 			return false;
 		}
 		return isValidLongitude (lon);
+	}
+	
+	public String quickTimeZone () {
+		String timeZone = "invalid";
+		String LA = "America/Los_Angeles";
+		String NY = "America/New_York";
+		String CH = "America/Chicago";
+		String HI = "Pacific/Honolulu";
+		String DEN = "America/Denver";
+		String ANC = "America/Anchorage";
+		String PHX = "America/Phoenix";
+		
+		if (Objects.equals(mCode,"ANC")) {
+			timeZone = ANC;
+		} else if (Objects.equals(mCode,"ATL")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"AUS")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"BDL")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"BNA")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"BOS")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"BWI")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"CLE")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"CLT")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"CMH")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"CVG")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"DCA")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"DEN")) {
+			timeZone = DEN;
+		} else if (Objects.equals(mCode,"DFW")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"DTW")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"EWR")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"FLL")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"HNL")) {
+			timeZone = HI;
+		} else if (Objects.equals(mCode,"HOU")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"IAD")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"IAH")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"IND")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"JFK")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"LAS")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"LAX")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"LGA")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"MCI")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"MCO")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"MDW")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"MEM")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"MIA")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"MSP")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"MSY")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"OAK")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"ONT")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"ORD")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"PDX")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"PHL")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"PHX")) {
+			timeZone = PHX;
+		} else if (Objects.equals(mCode,"PIT")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"RDU")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"RSW")) {
+			timeZone = NY;
+		} else if (Objects.equals(mCode,"SAN")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"SAT")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"SEA")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"SFO")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"SJC")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"SLC")) {
+			timeZone = DEN;
+		} else if (Objects.equals(mCode,"SMF")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"SNA")) {
+			timeZone = LA;
+		} else if (Objects.equals(mCode,"STL")) {
+			timeZone = CH;
+		} else if (Objects.equals(mCode,"TPA")) {
+			timeZone = NY;
+		}
+		
+		return timeZone;
 	}
 
 }

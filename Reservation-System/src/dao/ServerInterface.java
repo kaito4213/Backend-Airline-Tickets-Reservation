@@ -7,12 +7,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Objects;
 
 import model.airplane.Airplanes;
 import model.airport.Airport;
 import model.airport.Airports;
 import model.flight.*;
-import dao.DaoAirport;
 import utils.QueryFactory;
 
 
@@ -38,27 +38,30 @@ public enum ServerInterface {
 	 * @param teamName identifies the name of the team requesting the collection of airports
 	 * @return collection of Airports from server
 	 */
-	public Airports getAirports (String teamName) {
+	public void getAirports (String teamName) {
 
 		StringBuffer airportResult, timeZoneResult;
 		String xmlAirports, xmlAirportTimeZone;
-		Airports airports;
 
 		// Get Airports
 		
 		airportResult = trySetup(teamName, "airport", null);
 		xmlAirports = airportResult.toString();
-		airports = Dao.addAllAirports(xmlAirports);
+		Dao.addAllAirports(xmlAirports);
 		
 		// get time zones
-		for (Airport airport : airports) {
-			timeZoneResult = trySetup("","timezone", airport);
-			xmlAirportTimeZone = timeZoneResult.toString();
-			Dao.addAirportTimeZone(xmlAirportTimeZone, airport);
+		for (Airport airport : Airports.getInstance()) {
+			String timeZone = airport.quickTimeZone();
+			if (Objects.equals(timeZone,"invalid")) {
+				timeZoneResult = trySetup("","timezone", airport);
+				xmlAirportTimeZone = timeZoneResult.toString();
+				Dao.addAirportTimeZone(xmlAirportTimeZone, airport);
+			}
+			else {
+				airport.timeZone(timeZone);
+			}
 		}
 		//
-		
-		return airports;
 		
 	}
 	
@@ -72,48 +75,14 @@ public enum ServerInterface {
 	 */
 	public Flights getFlights (String teamName, String departureAirport, String departureDate) {
 
-		URL url;
-		HttpURLConnection connection;
-		BufferedReader reader;
-		String line;
 		StringBuffer result = new StringBuffer();
-		
 		String xmlFlights;
 		Flights flights;
 
-		try {
-			/**
-			 * Create an HTTP connection to the server for a GET 
-			 */
-			url = new URL(mUrlBase + QueryFactory.getFlights(teamName, departureAirport, departureDate));
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("User-Agent", teamName);
-
-			/**
-			 * If response code of SUCCESS read the XML string returned
-			 * line by line to build the full return string
-			 */
-			int responseCode = connection.getResponseCode();
-			if (responseCode >= HttpURLConnection.HTTP_OK) {
-				InputStream inputStream = connection.getInputStream();
-				String encoding = connection.getContentEncoding();
-				encoding = (encoding == null ? "UTF-8" : encoding);
-
-				reader = new BufferedReader(new InputStreamReader(inputStream));
-				while ((line = reader.readLine()) != null) {
-					result.append(line);
-				}
-				reader.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		result = trySetup(teamName,"flight",null);
 
 		xmlFlights = result.toString();
-		flights = DaoFlight.addAll(xmlFlights);
+		flights = Dao.addAllFlights(xmlFlights);
 		return flights;
 		
 	}

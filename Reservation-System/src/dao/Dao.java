@@ -205,8 +205,6 @@ public class Dao {
 		coachBooked = Integer.parseInt(getCharacterDataFromElement(elementCoach));
 		coachPrice = elementCoach.getAttributeNode("Price").getValue();
 		
-
-
 		/**
 		 * Update the Airport object with values from XML node
 		 */
@@ -242,8 +240,7 @@ public class Dao {
 	 * @pre the xmlAirports string adheres to the format specified by the server API
 	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
-	public static Airports addAllAirports (String xmlAirports) throws NullPointerException {
-		Airports airports = new Airports();
+	public static void addAllAirports (String xmlAirports) throws NullPointerException {
 		
 		// Load the XML string into a DOM tree for ease of processing
 		// then iterate over all nodes adding each airport to our collection
@@ -255,11 +252,9 @@ public class Dao {
 			Airport airport = buildAirport (elementAirport);
 			
 			if (airport.isValid()) {
-				airports.add(airport);
+				Airports.getInstance().add(airport); 
 			}
 		}
-		
-		return airports;
 	}
 
 	/**

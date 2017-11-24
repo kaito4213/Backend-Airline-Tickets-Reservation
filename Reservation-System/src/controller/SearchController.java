@@ -23,6 +23,7 @@ public class SearchController {
 		input = new InputView();
 		input.setUserSearchInput();
 		
+		
 		search = new SearchFlights();
 		search.departureAirportCode(input.getDepartureAirportCode());
 		search.arrivalAirportCode(input.getArrivalAirportCode());
