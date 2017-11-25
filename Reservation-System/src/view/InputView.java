@@ -50,7 +50,7 @@ public class InputView {
 			requestValidRetDate(scan);
 		}
 		
-		scan.close();
+		//scan.close();
 	}
 	
 	/**

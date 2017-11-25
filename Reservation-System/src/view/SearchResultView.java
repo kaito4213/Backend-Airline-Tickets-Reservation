@@ -47,7 +47,6 @@ public class SearchResultView {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("please select your flights: ");
 		input = scanner.nextLine();
-		//scanner.close();
 		return Integer.parseInt(input);
 		
 	}
