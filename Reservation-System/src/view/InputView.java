@@ -3,7 +3,6 @@ package view;
 import java.util.Scanner;
 
 import model.airport.Airport;
-import sun.rmi.runtime.Log;
 /**
  * This class implements search page user input interface. 
  */

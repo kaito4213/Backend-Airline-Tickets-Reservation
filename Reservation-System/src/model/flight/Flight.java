@@ -1,5 +1,6 @@
 package model.flight;
 
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
@@ -109,13 +110,16 @@ public class Flight {
 		return coachPrice;
 	}
 
+	/**
+	 * Returns departure time in local time
+	 * 
+	 * @return departure time in local time
+	 */
 	public String getLocalDepTime() throws ParseException {
 		Airport depAirport = null;
-		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		String localTime;
 		
-		calendar.setTime(calendar.getTime());
-	    System.out.println(calendar.getTime());
-		
+		// Get time zone for departing airport
 		for(Airport airport : Airports.getInstance()) {
 			String name = airport.code();
 	        if(name.equals(departureAirport)) {
@@ -123,22 +127,21 @@ public class Flight {
 	            break;
 	        }
 	    }
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		formatter.setTimeZone(TimeZone.getTimeZone(depAirport.timezone()));
-		String time = formatter.format(calendar.getTime());
-		return time;
+		localTime =  formattedLocalTime(depAirport.timezone());
+		return localTime;
 	}
 
+	/**
+	 * Returns arrival time in local time
+	 * 
+	 * @return arrival time in local time
+	 */
 	public String getLocalArrTime() throws ParseException {
 		Airport arrAirport = null;
-		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-		
-		calendar.setTime(calendar.getTime());
-	    System.out.println(calendar.getTime());
-		
+		String localTime;
+
+		// Get time zone for arriving airport
 		for(Airport airport : Airports.getInstance()) {
 			String airportCode = airport.code();
 	        if(airportCode.equals(departureAirport)) {
@@ -147,10 +150,24 @@ public class Flight {
 	        }
 	    }
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
-		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+		localTime =  formattedLocalTime(arrAirport.timezone());
+		return localTime;
+	}
+	
+	/**
+	 * Returns any time in local time
+	 * 
+	 * @return any time in local time
+	 */
+	public String formattedLocalTime(String timeZone) throws ParseException {
+		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
 
-		formatter.setTimeZone(TimeZone.getTimeZone(arrAirport.timezone()));
+	    String sDate = arrivalAirportTime;  
+	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z").parse(sDate);  
+		calendar.setTime(date);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		formatter.setTimeZone(TimeZone.getTimeZone(timeZone));
 		String time = formatter.format(calendar.getTime());
 		return time;
 	}
