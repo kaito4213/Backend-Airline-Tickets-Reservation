@@ -140,8 +140,8 @@ public class Flight {
 	    System.out.println(calendar.getTime());
 		
 		for(Airport airport : Airports.getInstance()) {
-			String name = airport.code();
-	        if(name.equals(departureAirport)) {
+			String airportCode = airport.code();
+	        if(airportCode.equals(departureAirport)) {
 	            arrAirport = airport;
 	            break;
 	        }

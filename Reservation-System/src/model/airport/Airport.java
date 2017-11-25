@@ -350,6 +350,22 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	}
 	
 	/**
+	 * Check that input is a valid airport from list of airports
+	 * 
+	 * @param code is the airport code to validate
+	 * @return false if null or not 3 characters in length, else assume valid and return true
+	 */
+	public static boolean isValidInputCode (String code) {
+		for(Airport airport : Airports.getInstance()) {
+			String airportCode = airport.code();
+	        if(airportCode.equals(code)) {
+	            return true;
+	        }
+	    }
+		return false;
+	}
+	
+	/**
 	 * Check for invalid airport name.
 	 * 
 	 * @param name is the name of the airport to validate
