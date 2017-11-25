@@ -29,7 +29,6 @@ public class Driver {
 }
 
 /* To do:
- *       Method for get local time
  *       jUnit tests
  *       Sorting
  *

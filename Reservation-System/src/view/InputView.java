@@ -110,29 +110,75 @@ public class InputView {
 	public void requestValidRetDate(Scanner scan) {
 		String input, parsedInput;
 		boolean validRetDate = false;
+		boolean dateValid;
 		
 		do {
 			
 			System.out.println("Please input your return date in the format of mm/dd/yyyy: ");
 			input = scan.nextLine();
 			parsedInput = checkValidDate(input);
+			dateValid = ensureRetAfterDep();
 			
 			
-			if ( parsedInput != null ) {
+			if ( (parsedInput != null) && (dateValid == true) ) {
 				returnDate(parsedInput);
 				validRetDate = true;
 			}
 			
 		}while(!validRetDate);
 	}
-	
+
+	/**
+	 * Ensures return date is after departure date
+	 * 
+	 * @return true if valid return date, false if invalid
+	 */
+	public boolean ensureRetAfterDep() {
+		int day1, day2, month1, month2, year1, year2;
+		String retDate = inputReturnDate;
+		String depDate = inputDepartureDate;
+		
+		// Parse departure date
+		String[] tokens = depDate.split("/");
+		month1 = Integer.parseInt(tokens[0]);
+		day1 = Integer.parseInt(tokens[1]);
+		year1 = Integer.parseInt(tokens[2]);
+		
+		// Parse return date
+		tokens = retDate.split("/");
+		month2 = Integer.parseInt(tokens[0]);
+		day2 = Integer.parseInt(tokens[1]);
+		year2 = Integer.parseInt(tokens[2]);
+		
+		// Compare values
+		if (year2 < year1) {
+			return false;
+		} else if (month2 < month1) {
+			return false;
+		} else if (day2 < day1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Verifies that date input matches input format and is within range
+	 * 
+	 * @return formatted date for get request or null if invalid
+	 */
 	public String checkValidDate(String input) {
 		String[] tokens = input.split("/");
+		
+		if (tokens.length != 3) {
+			return null;
+		}
+		
 		int month = Integer.parseInt(tokens[0]);
 		int day = Integer.parseInt(tokens[1]);
 		int year = Integer.parseInt(tokens[2]);
 		
-		if ( (month == 12) && (day > 0) && (day <= 31) && (year == 2017) ) {
+		if ( (month == 12) && (day >= 5) && (day <= 31) && (year == 2017) ) {
 			return (year + "_" + month + "_" + day);
 		}
 		else {
