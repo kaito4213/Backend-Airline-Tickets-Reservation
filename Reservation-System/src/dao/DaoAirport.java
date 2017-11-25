@@ -44,8 +44,7 @@ public class DaoAirport {
 	 * @pre the xmlAirports string adheres to the format specified by the server API
 	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
-	public static Airports addAll (String xmlAirports) throws NullPointerException {
-		Airports airports = new Airports();
+	public static void addAll (String xmlAirports) throws NullPointerException {
 		
 		// Load the XML string into a DOM tree for ease of processing
 		// then iterate over all nodes adding each airport to our collection
@@ -57,11 +56,9 @@ public class DaoAirport {
 			Airport airport = buildAirport (elementAirport);
 			
 			if (airport.isValid()) {
-				airports.add(airport);
+				Airports.getInstance().add(airport);
 			}
 		}
-		
-		return airports;
 	}
 
 	/**

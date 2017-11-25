@@ -1,6 +1,8 @@
 package view;
 
 import java.util.Scanner;
+
+import model.airport.Airport;
 /**
  * This class implements search page user input interface. 
  */
@@ -35,39 +37,213 @@ public class InputView {
 	}
 	
 	public void setUserSearchInput() {
-		String input;
-		Scanner scan= new Scanner(System.in);
-		System.out.println("please input your departure airport code: ");
-		input = scan.nextLine();
-		departureAirportCode(input);
+		Scanner scan = new Scanner(System.in);
+
+		requestValidDepAirport(scan);
+		requestValidArrAirport(scan);
+		requestValidDepDate(scan);
+		requestValidClass(scan);
+		requestValidStopOver(scan);
+		requestValidRoundTrip(scan);
 		
-		System.out.println("please input your arrival airport code: ");
-		input = scan.nextLine();
-		arrivalAirportCode(input);
-		
-		System.out.println("please input your departure date in the format of yyyy_mm_dd: ");
-		input = scan.nextLine();
-		departureDate(input);
-		
-		System.out.println("please input your preference seat (FirstClass/Coach): ");
-		input = scan.nextLine();
-		seatPreference(input);
-		
-		System.out.println("Do you want to have stopover between the departure and destination(yes/no): ");
-		input = scan.nextLine();
-		hasStopOver(input);
-		
-		System.out.println("Do you want a round trip(yes/no): ");
-		String round = scan.nextLine();
-		isRoundTrip(round);
-		
-		if (round.equals("yes")) {
-			System.out.println("please input your return date in the format of yyyy_mm_dd: ");
-			input = scan.nextLine();
-			returnDate(input);
+		if (inputIsRoundTrip.equals("yes")) {
+			requestValidRetDate(scan);
 		}
 		
-		//scan.close();
+		scan.close();
+	}
+	
+	/**
+	 * Request departure airport and set if valid
+	 * 
+	 */
+	public void requestValidDepAirport(Scanner scan) {
+		String input;
+		
+		do {
+			System.out.println("Please input your departure airport code: ");
+			input = scan.nextLine();
+			departureAirportCode(input);
+			}while(!Airport.isValidInputCode(input));
+	}
+	
+	/**
+	 * Request arrival airport and set if valid
+	 * 
+	 */
+	public void requestValidArrAirport(Scanner scan) {
+		String input;
+		
+		do {
+			System.out.println("please input your arrival airport code: ");
+			input = scan.nextLine();
+			arrivalAirportCode(input);
+			}while(!Airport.isValidInputCode(input));
+	}
+	
+	/**
+	 * Request departure date and set if valid
+	 * 
+	 */
+	public void requestValidDepDate(Scanner scan) {
+		String input, parsedInput;
+		boolean validDepDate = false;
+		
+		do {
+			
+			System.out.println("Please input your departure date in the format of mm/dd/yyyy: ");
+			input = scan.nextLine();
+			parsedInput = checkValidDate(input);
+			
+			
+			if ( parsedInput != null ) {
+				departureDate(parsedInput);
+				validDepDate = true;
+			}
+			
+		}while(!validDepDate);
+	}
+	
+	/**
+	 * Request return date and set if valid
+	 * 
+	 */
+	public void requestValidRetDate(Scanner scan) {
+		String input, parsedInput;
+		boolean validRetDate = false;
+		boolean dateValid;
+		
+		do {
+			
+			System.out.println("Please input your return date in the format of mm/dd/yyyy: ");
+			input = scan.nextLine();
+			parsedInput = checkValidDate(input);
+			dateValid = ensureRetAfterDep();
+			
+			
+			if ( (parsedInput != null) && (dateValid == true) ) {
+				returnDate(parsedInput);
+				validRetDate = true;
+			}
+			
+		}while(!validRetDate);
+	}
+
+	/**
+	 * Ensures return date is after departure date
+	 * 
+	 * @return true if valid return date, false if invalid
+	 */
+	public boolean ensureRetAfterDep() {
+		int day1, day2, month1, month2, year1, year2;
+		String retDate = inputReturnDate;
+		String depDate = inputDepartureDate;
+		
+		// Parse departure date
+		String[] tokens = depDate.split("/");
+		month1 = Integer.parseInt(tokens[0]);
+		day1 = Integer.parseInt(tokens[1]);
+		year1 = Integer.parseInt(tokens[2]);
+		
+		// Parse return date
+		tokens = retDate.split("/");
+		month2 = Integer.parseInt(tokens[0]);
+		day2 = Integer.parseInt(tokens[1]);
+		year2 = Integer.parseInt(tokens[2]);
+		
+		// Compare values
+		if (year2 < year1) {
+			return false;
+		} else if (month2 < month1) {
+			return false;
+		} else if (day2 < day1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Verifies that date input matches input format and is within range
+	 * 
+	 * @return formatted date for get request or null if invalid
+	 */
+	public String checkValidDate(String input) {
+		String[] tokens = input.split("/");
+		if (tokens.length != 3) {
+			return null;
+		}
+		
+		int month = Integer.parseInt(tokens[0]);
+		int day = Integer.parseInt(tokens[1]);
+		int year = Integer.parseInt(tokens[2]);
+		
+		if ( (month == 12) && (day >= 5) && (day <= 31) && (year == 2017) ) {
+			return (year + "_" + month + "_" + day);
+		}
+		else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Request first class or coach and set if valid
+	 * 
+	 */
+	public void requestValidClass(Scanner scan) {
+		String input;
+		boolean validClass = false;
+		
+		do {
+			System.out.println("Please input your preference seat (First Class/Coach): ");
+			input = scan.nextLine();
+			
+			if (input.toUpperCase().equals("COACH")) {
+				validClass = true;
+				seatPreference("Coach");
+			}
+			else if (input.toUpperCase().equals("FIRST CLASS")) {
+				validClass = true;
+				seatPreference("FirstClass");
+			}
+		}while(!validClass);
+	}
+	
+	/**
+	 * Request stop over yes/no and set if valid
+	 * 
+	 */
+	public void requestValidStopOver(Scanner scan) {
+		String input;
+		boolean validStopOver = false;
+		do {
+			System.out.println("Do you want to have stopover between the departure and destination(yes/no): ");
+			input = scan.nextLine();
+
+			if (input.toUpperCase().equals("NO") || input.toUpperCase().equals("YES")) {
+				hasStopOver(input.toLowerCase());
+				validStopOver = true;
+			} 
+		}while(!validStopOver);
+	}
+	
+	/**
+	 * Request round trip yes/no and set if valid
+	 * 
+	 */
+	public void requestValidRoundTrip(Scanner scan) {
+		String input;
+		boolean validRoundTrip = false;
+		
+		do {
+			System.out.println("Do you want a round trip(yes/no): ");
+			input = scan.nextLine();
+			
+			if (input.toUpperCase().equals("NO") || input.toUpperCase().equals("YES")) {
+				isRoundTrip(input.toLowerCase());
+				validRoundTrip = true;
+			} 
+		}while(!validRoundTrip);
 	}
 	
 	/**

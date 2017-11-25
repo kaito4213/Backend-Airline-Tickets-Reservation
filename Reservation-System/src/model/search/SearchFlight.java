@@ -37,7 +37,6 @@ public class SearchFlight {
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
 	private static HashMap<String, Integer> firstClassSeatsMap;
-
 	
 	/**
 	 * Default constructor
@@ -322,6 +321,12 @@ public class SearchFlight {
 			stop++;		
 		}
 		
+		for (Flights f : result) {
+			//System.out.println(f);
+			for (Flight flight : f) {
+				System.out.println(flight.toString());
+			}
+		}
 		return result;
 	}	
 }

@@ -1,5 +1,13 @@
 package model.flight;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.GregorianCalendar;
+import model.airport.Airport;
+import model.airport.Airports;
+
 public class Flight {
 	
 	private int number;
@@ -102,14 +110,86 @@ public class Flight {
 		return coachPrice;
 	}
 
+	/**
+	 * Returns departure time in local time
+	 * 
+	 * @return departure time in local time
+	 */
+	public String getLocalDepTime() throws ParseException {
+		Airport depAirport = null;
+		String localTime;
+		
+		// Get time zone for departing airport
+		for(Airport airport : Airports.getInstance()) {
+			String name = airport.code();
+	        if(name.equals(departureAirport)) {
+	            depAirport = airport;
+	            break;
+	        }
+	    }
+
+		localTime =  formattedLocalTime(depAirport.timezone());
+		return localTime;
+	}
+
+	/**
+	 * Returns arrival time in local time
+	 * 
+	 * @return arrival time in local time
+	 */
+	public String getLocalArrTime() throws ParseException {
+		Airport arrAirport = null;
+		String localTime;
+
+		// Get time zone for arriving airport
+		for(Airport airport : Airports.getInstance()) {
+			String airportCode = airport.code();
+	        if(airportCode.equals(departureAirport)) {
+	            arrAirport = airport;
+	            break;
+	        }
+	    }
+		
+		localTime =  formattedLocalTime(arrAirport.timezone());
+		return localTime;
+	}
+	
+	/**
+	 * Returns any time in local time
+	 * 
+	 * @return any time in local time
+	 */
+	public String formattedLocalTime(String timeZone) throws ParseException {
+		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
+
+	    String sDate = arrivalAirportTime;  
+	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z").parse(sDate);  
+		calendar.setTime(date);
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		formatter.setTimeZone(TimeZone.getTimeZone(timeZone));
+		String time = formatter.format(calendar.getTime());
+		return time;
+	}
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(number).append(", ");
 		sb.append(departureAirport).append(", ");
-		sb.append(departureAirportTime).append("\n ");
+		try {
+			sb.append(getLocalDepTime()).append("\n ");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		sb.append(arrivalAirport).append(", ");
-		sb.append(arrivalAirportTime).append("\n ");
+		try {
+			sb.append(getLocalArrTime()).append("\n ");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		/**
 		sb.append("(Flight time: ").append(flightTime).append(", ");
 		sb.append("Airplane model: ").append(airplane).append(", ");
