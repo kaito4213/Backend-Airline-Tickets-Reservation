@@ -45,7 +45,7 @@ public enum ServerInterface {
 
 		// Get Airports
 		
-		airportResult = trySetup(teamName, "airport", null);
+		airportResult = trySetup(teamName, "airport", null,null,null);
 		xmlAirports = airportResult.toString();
 		Dao.addAllAirports(xmlAirports);
 		
@@ -53,7 +53,7 @@ public enum ServerInterface {
 		for (Airport airport : Airports.getInstance()) {
 			String timeZone = airport.quickTimeZone();
 			if (Objects.equals(timeZone,"invalid")) {
-				timeZoneResult = trySetup("","timezone", airport);
+				timeZoneResult = trySetup("","timezone", airport,null,null);
 				xmlAirportTimeZone = timeZoneResult.toString();
 				Dao.addAirportTimeZone(xmlAirportTimeZone, airport);
 			}
@@ -79,7 +79,7 @@ public enum ServerInterface {
 		String xmlFlights;
 		Flights flights;
 
-		result = trySetup(teamName,"flight",null);
+		result = trySetup(teamName,"flight",null,departureAirport,departureDate);
 
 		xmlFlights = result.toString();
 		flights = Dao.addAllFlights(xmlFlights);
@@ -101,7 +101,7 @@ public enum ServerInterface {
 		String xmlAirplanes;
 		Airplanes airplanes;
 
-		result = trySetup(teamName,"airplane",null);
+		result = trySetup(teamName,"airplane",null,null,null);
 
 		xmlAirplanes = result.toString();
 		airplanes = Dao.addAllAirplanes(xmlAirplanes);
@@ -119,7 +119,7 @@ public enum ServerInterface {
 	 * @return StringBuffer result
 	 */
 	
-	public StringBuffer trySetup (String teamName, String type, Airport airport) {
+	public StringBuffer trySetup (String teamName, String type, Airport airport, String departureAirport, String departureDate) {
 		URL url;
 		HttpURLConnection connection;
 		BufferedReader reader;
@@ -135,7 +135,7 @@ public enum ServerInterface {
 				url = new URL(mUrlBase + QueryFactory.getAirplanes(teamName));
 			}
 			else if (type == "flight") {
-				url = new URL(mUrlBase + QueryFactory.getFlights(teamName));
+				url = new URL(mUrlBase + QueryFactory.getFlights(teamName,departureAirport,departureDate));
 			}
 			else if (type == "airport") {
 				url = new URL(mUrlBase + QueryFactory.getAirports(teamName));
