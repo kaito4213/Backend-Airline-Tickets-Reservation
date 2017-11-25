@@ -2,19 +2,23 @@ package model.search;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.TimeZone;
-import java.util.Date;
+import java.util.HashMap;
 
 import dao.ServerInterface;
-import model.airport.Airport;
-import model.airport.Airports;
+import model.airplane.Airplane;
+import model.airplane.Airplanes;
 import model.flight.Flight;
 import model.flight.Flights;
+
 /**
  * This class search all the flights that satisfy customer's requirement of one-way trip.
  * Class member attributes are the same as defined by the view. If customer requires return flight,
@@ -28,7 +32,12 @@ public class SearchFlight {
 	private String mSeatPreference;				// preference of seat class on the airplane
 	private boolean isStopOver;					// number of stopOver from departure to arrival
 	private final String mTeamName = "Muse";
-	private final int maxStopOver = 2;
+	private final int maxStopOver = 1;
+	private final float MIN_LAYOVER_INMINUTES = 30;
+	private final float MAX_LAYOVER_INMINUTES = 240;
+	private static HashMap<String, Integer> coachSeatsMap;
+	private static HashMap<String, Integer> firstClassSeatsMap;
+
 	
 	/**
 	 * Default constructor
@@ -45,6 +54,8 @@ public class SearchFlight {
 		mDepartureDate = "";
 		mSeatPreference = "";
 		isStopOver = false;
+		coachSeatsMap = this.getCoachSearMap();
+		firstClassSeatsMap = this.getFirstClassSeatsMap();
 	}
 	
 	/**
@@ -69,6 +80,40 @@ public class SearchFlight {
 		mDepartureDate = date;
 		mSeatPreference = seat;
 		isStopOver = stop;
+		coachSeatsMap = this.getCoachSearMap();
+		firstClassSeatsMap = this.getFirstClassSeatsMap();
+	}
+	
+	/**
+	 * get the available coach seats for each type of airplane
+	 * @return HashMap that contains the model as key, number of available coach seats as value
+	 */
+	public HashMap<String, Integer> getCoachSearMap(){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		Airplanes mAirplanes = ServerInterface.INSTANCE.getAirplanes(mTeamName);
+		for (Airplane plane : mAirplanes) {
+			if (!map.containsKey(plane.getModel())){
+				map.put(plane.getModel(), plane.getCoachSeats());
+			}
+		}
+		
+		return map;
+	}
+	
+	/**
+	 * get the available first class seats for each type of airplane
+	 * @return HashMap that contains the model as key, number of available first class seats as value
+	 */
+	public HashMap<String, Integer> getFirstClassSeatsMap(){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		Airplanes mAirplanes = ServerInterface.INSTANCE.getAirplanes(mTeamName);
+		for (Airplane plane : mAirplanes) {
+			if (!map.containsKey(plane.getModel())){
+				map.put(plane.getModel(), plane.getFirstClassSeats());
+			}
+		}
+		
+		return map;
 	}
 	
 	
@@ -87,27 +132,63 @@ public class SearchFlight {
 		
 		return sb.toString();
 	}
-
 	
-	/** Determine if the stopOver time is reasonable(reasonable time ? need to be more specified here)
-	 * 
-	 *  @param arrivalTime Local time of arrival in last flight
-	 *  @param departureTime Local time of departure in next flight
-	 *  @return false if unreasonable, ture if reasonable 
-	 */
-	public boolean isValidStopOverTime(String arrivalTime, String departureTime){
-		
-		return true;
-	}
 	
 	public boolean isAvailableSeat(Flight flight){
+		String type = flight.getAirplane();
+		int bookedSeat = 0;
+		int availableSeat = 0;
 		
-		return true;
+		if (mSeatPreference == "Coach") {
+			bookedSeat = flight.getCoachBooked();
+			availableSeat = coachSeatsMap.get(type);
+		} else {
+			bookedSeat = flight.getFirstClassBooked();
+			availableSeat = firstClassSeatsMap.get(type);
+		}
+		
+		return bookedSeat >= availableSeat ? false : true;
 	}
 	
-	public void addDay (Date day) {
-		
+	
+	/**
+	 * This method adds one day to date given as the parameter.
+	 * 
+	 * @param date represents the date  in "yyyy MMM dd HH:mm z" string format.
+	 * @return date represents in "yyyy MMM dd HH:mm z" string format.
+	 * @throws ParseException if the date parsing fails
+	 */
+	public String addDay(String date) throws ParseException{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z", Locale.US);
+		formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		calendar.setTime(formatter.parse(date));
+		calendar.add(Calendar.DATE, 1);
+		return formatter.format(calendar.getTime());
 	}
+	
+	
+	/**
+	 * This method checks for the constraints that the layOver time in the range of (0.5hr, 4hr).
+	 * @param arrivalTime arrival time of last flight in "yyyy MMM dd HH:mm z" format.
+	 * @param departureTime departure time of next flight in "yyyy MMM dd HH:mm z" format.
+	 * @return true if satisfies layOver time constraints.
+	 * @throws ParseException is thrown when the date parsing fails
+	 */
+	public boolean isValidStopOver(String arrivalTime,String departureTime) throws ParseException{
+		DateTimeFormatter mformatter = DateTimeFormatter.ofPattern("yyyy MMM d HH:mm z");
+		
+		LocalDateTime departTimeLocal = LocalDateTime.parse(departureTime, mformatter);
+		LocalDateTime arrivalTimeLocal = LocalDateTime.parse(arrivalTime, mformatter);
+		
+		float diffInMinutes = java.time.Duration.between(arrivalTimeLocal, departTimeLocal).toMinutes();
+		
+		if (diffInMinutes < MIN_LAYOVER_INMINUTES || diffInMinutes > MAX_LAYOVER_INMINUTES) {
+			return false;
+		}
+		return true;
+	}
+	 
 	
 	/**
 	 * This method converts a date string from "yyyy MMM dd HH:mm z" format to "yyyy_MM_dd" format.
@@ -141,18 +222,57 @@ public class SearchFlight {
 		return result;
 	}
 	
+	
+	/**
+	 * This method check the next day flights for any flight that arrives after 20:00.
+	 * 
+	 * @param arrivalTime represents the arrival time of a flight in "yyyy MMM dd HH:mm z" string format.
+	 * @return true if arrival time of a flight is after 9pm else returns false boolean value.
+	 * @throws ParseException if the date parsing fails
+	 */
+	public boolean checkNextDay(String arrivalTime) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z", Locale.US);
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+		calendar.setTime(formatter.parse(arrivalTime));
+		int hour = calendar.get(Calendar.HOUR);
+		
+		if(hour >= 20){
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
+	 * This method check if the connected flight is valid. It will both check seats and lay over time.
+	 * @param lastFlight represents the first flight arrives at the airport
+	 * @param nextFlight represents the second flight departs from the airport
+	 * @return
+	 * @throws ParseException if the date parsing fails
+	 */
+	public boolean checkValidConnectedFlight(Flight lastFlight, Flight nextFlight) throws ParseException {
+		String arrival = lastFlight.getArrivalAirportTime();
+		String depart = nextFlight.getDepartureAirportTime();
+		return isValidStopOver(arrival, depart) && isAvailableSeat(nextFlight);
+	}
+	
+	
 	/**
 	 * This method search all the flights that satisfies user requirement
 	 * 
 	 * @return list of Flights depart from mDepartureAirportCode and arrive at mArrivalAirportCode on mDepartureDate
 	 */
-	public List<Flights> search () throws ParseException {
+	public List<Flights> search() throws ParseException {
 		int stop = 0;
 		List<Flights> result = new ArrayList<Flights>();
 		Flights flights = ServerInterface.INSTANCE.getFlights(mTeamName, mDepartureAirportCode, mDepartureDate);
 		Queue<Flights> currentFlightsQ = new LinkedList<Flights>();
 		
+		//check flight from mDepartureAirportCode on mDepartureDate, if there is any available seat.
 		for (Flight flight : flights) {
+			if (!isAvailableSeat(flight)) {
+				continue;			
+			}
+			
 			Flights newFlights = new Flights();
 			newFlights.add(flight);
 			
@@ -160,20 +280,35 @@ public class SearchFlight {
 				result.add(newFlights);
 			} else {
 				currentFlightsQ.add(newFlights);
-			}
+			}		
 		}
 		
-		//search with stop over
+		//if customer doesn't want to stop, return the direct flights
+		if (!isStopOver) {
+			return result;
+		}
+		
+		//search connected flights
 		while(stop < maxStopOver && !currentFlightsQ.isEmpty()) {
 			Queue<Flights> nextFlightsQ = new LinkedList<Flights>();
 			
 			while(!currentFlightsQ.isEmpty()) {
-				Flights currentFlights = currentFlightsQ.poll();			
-				String nextDeparture = currentFlights.get(currentFlights.size() - 1).getArrivalAirport();
-				String date = dateFormatter(currentFlights.get(currentFlights.size() - 1).getArrivalAirportTime());	
+				Flights currentFlights = currentFlightsQ.poll();	
+				Flight lastFlight = currentFlights.get(currentFlights.size() - 1);
+				String nextDeparture = lastFlight.getArrivalAirport();
+				String date = dateFormatter(lastFlight.getArrivalAirportTime());	
 				Flights nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+				
+				if (checkNextDay(lastFlight.getArrivalAirportTime())) {
+					String nextDay = dateFormatter(addDay(date));		
+					Flights nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
+					nextFlights.addAll(nextDayFlights);
+				}		
 					
-				for (Flight flight : nextFlights) {					
+				for (Flight flight : nextFlights) {		
+					if (!checkValidConnectedFlight(lastFlight, flight)) {
+						continue;
+					}
 
 					if (flight.getArrivalAirport().equals(mArrivalAirportCode)){
 						result.add(addFlight(currentFlights, flight));				
@@ -187,10 +322,6 @@ public class SearchFlight {
 			stop++;		
 		}
 		
-		for (Flights f : result) {
-			System.out.println(f);
-		}
 		return result;
-	}
-	
+	}	
 }

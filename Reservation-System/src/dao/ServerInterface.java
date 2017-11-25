@@ -13,6 +13,7 @@ import model.airport.Airport;
 import model.airport.Airports;
 import model.flight.*;
 import dao.DaoAirport;
+import model.reservation.*;
 import utils.QueryFactory;
 
 
@@ -317,7 +318,7 @@ public enum ServerInterface {
 	 * @param teamName is the name of the team holding the lock
 	 * @return true if the update was successful
 	 */
-	public boolean postFlights (String teamName) {
+	public boolean postFlights (String teamName, Reservation reservation) {
 		URL url;
 		HttpURLConnection connection;
 		
@@ -326,8 +327,8 @@ public enum ServerInterface {
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			
-			String params = QueryFactory.updateFlights(teamName);
-			
+			String params = QueryFactory.updateFlights(teamName,reservation);
+			System.out.println("params= " + params);
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			

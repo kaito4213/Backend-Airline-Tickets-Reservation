@@ -4,6 +4,7 @@ import java.util.Scanner;
 /**
  * This class implements search page user input interface. 
  */
+
 public class InputView {
 	
 	private String inputDepartureAirportCode;		// Three character code of the departure airport
@@ -66,7 +67,7 @@ public class InputView {
 			returnDate(input);
 		}
 		
-		scan.close();
+		//scan.close();
 	}
 	
 	/**
@@ -190,7 +191,5 @@ public class InputView {
 	public String getIsRoundTrip() {
 		return inputIsRoundTrip;
 	}
-	
-
 }
 

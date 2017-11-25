@@ -16,19 +16,39 @@ public class Airplane {
         firstClassSeats = 0;
     }
         
-    // Airplane Class Methods
+    public int getFirstClassSeats() {
+		return firstClassSeats;
+	}
+
+	public int getCoachSeats() {
+		return coachSeats;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	// Airplane Class Methods
     public void setFirstClassSeats(int newValue) {
     	firstClassSeats = newValue;
     }
+    
     public void setCoachSeats(int newValue) {
     	coachSeats = newValue;
     }
+    
     public void setModel(String newValue) {
     	model = newValue;
     }
+    
     public void setManufacturer(String newValue) {
     	manufacturer = newValue;
     }
+    
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		

@@ -1,7 +1,11 @@
 package controller;
 
 import java.text.ParseException;
+import java.util.List;
 
+import model.flight.Flights;
+import model.reservation.Reservation;
+import model.reservation.Reservations;
 import model.search.SearchFlight;
 import model.search.SearchFlights;
 import view.InputView;
@@ -32,10 +36,31 @@ public class SearchController {
 		search.stopOver(input.getHasStopOver());
 		search.roundTrip(input.getIsRoundTrip());
 		
-		search.getSearchResult();
+		List<Reservations> result = search.getSearchResult();
 		
-		//searchResult = new SearchResultView();
-		//searchResult.showSearchResult(search.toString());
-	}
-	
+		if (result == null || result.size() == 0) {
+			System.out.println("no flights available");
+			return;
+		}
+		
+		searchResult = new SearchResultView(result, search.roundTrip());
+		searchResult.showSearchResult();
+		
+		int outboundReservationIndex = searchResult.setReservation();
+		for (Reservation reservation : result.get(0)) {
+			if (outboundReservationIndex == reservation.getIndex()) {
+				reservation.confirmReservation();
+			}
+		}
+		
+		if (search.roundTrip() && result.size() > 1) {
+			int inboundReservationIndex = searchResult.setReservation();
+			for (Reservation reservation : result.get(0)) {
+				if (inboundReservationIndex == reservation.getIndex()) {
+					reservation.confirmReservation();
+				}
+			}
+		} 
+		
+	}	
 }

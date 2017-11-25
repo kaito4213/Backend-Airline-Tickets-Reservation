@@ -6,6 +6,8 @@ import java.util.List;
 
 import model.flight.Flight;
 import model.flight.Flights;
+import model.reservation.Reservation;
+import model.reservation.Reservations;
 import model.search.SearchFlight;
 
 public class SearchFlights {
@@ -187,6 +189,7 @@ public class SearchFlights {
 	
 	public void stopOver (String stop) {
 		boolean tmpStop;
+		stop.toLowerCase();
 		if(stop.equals("yes") || stop.equals("y")) {
 			tmpStop = true;
 		} else {
@@ -217,6 +220,7 @@ public class SearchFlights {
 	
 	public void roundTrip (String round) {
 		boolean tmpRound;
+		round.toLowerCase();
 		if(round.equals("yes") || round.equals("y")) {
 			tmpRound = true;
 		} else {
@@ -235,16 +239,30 @@ public class SearchFlights {
 		return isRoundTrip;
 	}
 	
-	public List<List<Flights>> getSearchResult() throws ParseException {
-		List<List<Flights>> result = new ArrayList<List<Flights>>();
-		SearchFlight goFlight = new SearchFlight(mDepartureAirportCode, mArrivalAirportCode, mDepartureDate, mSeatPreference, isStopOver);
-		result.add(goFlight.search());
+	public List<Reservations> getSearchResult() throws ParseException {
+		List<Reservations> result = new ArrayList<Reservations>();
+		SearchFlight outbound = new SearchFlight(mDepartureAirportCode, mArrivalAirportCode, mDepartureDate, mSeatPreference, isStopOver);
+		List<Flights> outboundFlights = outbound.search();
+		
+		Reservations outboundReservations = new Reservations();
+		int outboundReservationsIndex = 1;
+		for (Flights flights : outboundFlights) {
+			Reservation reservation = new Reservation(flights, mSeatPreference, outboundReservationsIndex++);
+			outboundReservations.add(reservation);
+		}
+		result.add(outboundReservations);
 		
 		if (isRoundTrip) {
-			SearchFlight returnFlight = new SearchFlight(mArrivalAirportCode, mDepartureAirportCode, mReturnDate, mSeatPreference,isStopOver);	
-			result.add(returnFlight.search());
+			SearchFlight inbound = new SearchFlight(mArrivalAirportCode, mDepartureAirportCode, mReturnDate, mSeatPreference,isStopOver);	
+			List<Flights> inboundFlights = inbound.search();
+			Reservations inboundReservations = new Reservations();
+			int inboundReservationsIndex = 1;
+			for (Flights flights : inboundFlights) {
+				Reservation reservation = new Reservation(flights, mSeatPreference, inboundReservationsIndex++);
+				inboundReservations.add(reservation);
+			}
+			result.add(inboundReservations);
 		}
-
 		return result;
 	}
 }
