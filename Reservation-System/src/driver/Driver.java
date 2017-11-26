@@ -1,13 +1,9 @@
 package driver;
 
 import java.text.ParseException;
-
 import controller.SearchController;
 import dao.ServerInterface;
-<<<<<<< HEAD
 
-=======
->>>>>>> 1553b9cfb2a216b29245bd3e6b3e4f3c41d03b8f
 
 
 public class Driver {
