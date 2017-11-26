@@ -119,11 +119,17 @@ public class Reservation implements Comparable<Reservation>{
 		String departureAirportTime = legs.get(0).getDepartureAirportTime();
 		String arrivalAirport = legs.get(legs.size() - 1).getArrivalAirport();
 		String arrivalAirportTime = legs.get(legs.size() - 1).getArrivalAirportTime();
+		//-----
+		int deptcode = legs.get(0).getNumber();
+		int arrivalcode = legs.get(legs.size() - 1).getNumber();
 		
 		StringBuffer sb = new StringBuffer();	
 		sb.append("Index: ").append(index).append(", ");
+		//----
+		sb.append("depart flight number: ").append(deptcode).append(", ");
 		sb.append("Departure: ").append(departureAirport).append(", ");
 		sb.append(departureAirportTime).append(", ");
+		sb.append("arrival flight number: ").append(arrivalcode).append(", ");
 		sb.append("Arrival: ").append(arrivalAirport).append(", ");
 		sb.append(arrivalAirportTime).append(", ");
 		sb.append("Duration: ").append(totalTimeString()).append(", ");
@@ -143,12 +149,12 @@ public class Reservation implements Comparable<Reservation>{
 	
 	/**
 	 * Default comparator
-	 * Compare two Reservation based on price
+	 * Compare two Reservation based on number of flights
 	 * 
 	 * @return results of String.compareToIgnoreCase
 	 */
 	public int compareTo(Reservation other) {
-		return 0;//this.TotalPrice - other.TotalPrice;		
+		return this.legs.size() - other.legs.size() ;		
 	}
 	
 	/**

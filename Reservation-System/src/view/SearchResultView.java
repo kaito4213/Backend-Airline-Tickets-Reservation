@@ -25,7 +25,7 @@ public class SearchResultView {
 	public void showSearchResult() {
 	
 		System.out.println("search result of outbound flights: \n");
-		//------
+		//---sort---
 		Reservations outboundList = reservations.get(0);
 		outboundList.sortbyTotalPrice(outboundList);
 		//------
