@@ -128,7 +128,7 @@ public class Flight {
 	        }
 	    }
 
-		localTime =  formattedLocalTime(depAirport.timezone());
+		localTime =  formattedLocalTime(depAirport.timezone(),departureAirportTime);
 		return localTime;
 	}
 
@@ -150,7 +150,7 @@ public class Flight {
 	        }
 	    }
 		
-		localTime =  formattedLocalTime(arrAirport.timezone());
+		localTime =  formattedLocalTime(arrAirport.timezone(),arrivalAirportTime);
 		return localTime;
 	}
 	
@@ -159,10 +159,9 @@ public class Flight {
 	 * 
 	 * @return any time in local time
 	 */
-	public String formattedLocalTime(String timeZone) throws ParseException {
+	public String formattedLocalTime(String timeZone,String sDate) throws ParseException {
 		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
 
-	    String sDate = arrivalAirportTime;  
 	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z").parse(sDate);  
 		calendar.setTime(date);
 		
