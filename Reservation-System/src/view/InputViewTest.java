@@ -32,11 +32,9 @@ public class InputViewTest {
 		InputView input = new InputView();
 
 		input.departureDate("12/12/2017");
-		input.returnDate("12/20/2017");
-		assertTrue(input.ensureRetAfterDep());
+		assertTrue(input.ensureRetAfterDep("2017_12_20"));
 
-		input.returnDate("12/2/2017");
-		assertFalse(input.ensureRetAfterDep());
+		assertFalse(input.ensureRetAfterDep("2017_12_2"));
 	}
 
 }

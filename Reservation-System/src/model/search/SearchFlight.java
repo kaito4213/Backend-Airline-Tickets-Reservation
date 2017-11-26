@@ -37,6 +37,7 @@ public class SearchFlight {
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
 	private static HashMap<String, Integer> firstClassSeatsMap;
+
 	
 	/**
 	 * Default constructor

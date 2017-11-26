@@ -49,7 +49,7 @@ public class InputView {
 		if (inputIsRoundTrip.equals("yes")) {
 			requestValidRetDate(scan);
 		}
-		
+
 		//scan.close();
 	}
 	
@@ -118,8 +118,7 @@ public class InputView {
 			System.out.println("Please input your return date in the format of mm/dd/yyyy: ");
 			input = scan.nextLine();
 			parsedInput = checkValidDate(input);
-			dateValid = ensureRetAfterDep();
-			
+			dateValid = ensureRetAfterDep(parsedInput);		
 			
 			if ( (parsedInput != null) && (dateValid == true) ) {
 				returnDate(parsedInput);
@@ -134,19 +133,20 @@ public class InputView {
 	 * 
 	 * @return true if valid return date, false if invalid
 	 */
-	public boolean ensureRetAfterDep() {
+
+	public boolean ensureRetAfterDep(String retDate) {
 		int day1, day2, month1, month2, year1, year2;
-		String retDate = inputReturnDate;
 		String depDate = inputDepartureDate;
 		
 		// Parse departure date
-		String[] tokens = depDate.split("/");
+		String[] tokens = depDate.split("_");
 		month1 = Integer.parseInt(tokens[0]);
 		day1 = Integer.parseInt(tokens[1]);
 		year1 = Integer.parseInt(tokens[2]);
 		
 		// Parse return date
-		tokens = retDate.split("/");
+
+		tokens = retDate.split("_");
 		month2 = Integer.parseInt(tokens[0]);
 		day2 = Integer.parseInt(tokens[1]);
 		year2 = Integer.parseInt(tokens[2]);
@@ -170,6 +170,7 @@ public class InputView {
 	 */
 	public String checkValidDate(String input) {
 		String[] tokens = input.split("/");
+		
 		if (tokens.length != 3) {
 			return null;
 		}
