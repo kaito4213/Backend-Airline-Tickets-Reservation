@@ -10,7 +10,9 @@ import view.InputView;
 import view.SearchResultView;
 
 /**
- * TODO: valid methods
+ * This class will take control of data flow. User will enter the search information in view layer,
+ * controller will pass the input to model, and model will connect server and search the result.
+ * The matched flights will be passed to result displayer in view package.
  *
  */
 public class SearchController {
@@ -18,7 +20,14 @@ public class SearchController {
 	private InputView input;		//user interface which will get all the search information from user
 	private SearchResultView searchResult;		//user interface which will display the search result to user	
 	private SearchFlights search;			// new search
-
+	
+	/**
+	 * Default constructor
+	 * Constructor without parameters. 
+	 * Set user input, start a search, and allow making reservations.
+	 * 
+	 * @throws ParseException if the date parsing fails
+	 */
 	public SearchController() throws ParseException {
 		input = new InputView();
 		input.setUserSearchInput();

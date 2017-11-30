@@ -10,6 +10,11 @@ import model.reservation.Reservation;
 import model.reservation.Reservations;
 import model.search.SearchFlight;
 
+/**
+ * This class search both of one-way trip and round-way trip that satisfy customer's requirement.
+ * Class member attributes are the same as defined by the view.
+ */
+
 public class SearchFlights {
 	private String mDepartureAirportCode;		// Three character code of the departure airport
 	private String mArrivalAirportCode;			// Three character code of the arrival airport
@@ -19,7 +24,11 @@ public class SearchFlights {
 	private boolean isStopOver;					// whether has stop over or not
 	private boolean isRoundTrip;				// whether is round trip or one way trip
 	
-	//default constructor
+	/**
+	 * Default constructor
+	 * 
+	 * Constructor without parameters. Requires object fields to be explicitly
+	 */	
 	public SearchFlights() {
 		mDepartureAirportCode = "";
 		mArrivalAirportCode = "";
@@ -30,7 +39,20 @@ public class SearchFlights {
 		isRoundTrip = false;	
 	}
 	
-	//Initializing constructor
+	/**
+	 * Initializing constructor.
+	 * 
+	 * All attributes are initialized with input values
+	 *  
+	 * @param depart Three character code of the departure airport
+	 * @param arrival Three character code of the arrival airport
+	 * @param departureDate Date of departure
+	 * @param returnDate Date of return
+	 * @param seat Preference of seat class on the airplane
+	 * @param stopover if customer wants stop overs between the origin and destination
+	 * @param round if customer wants return flight
+	 * 
+	 */
 	public SearchFlights(String depart, String arrival, String departureDate, String returnDate, String seat, boolean stopover, boolean round) {
 		mDepartureAirportCode = depart;
 		mArrivalAirportCode = arrival;
@@ -41,7 +63,20 @@ public class SearchFlights {
 		isRoundTrip = round;	
 	}
 	
-	//Initializing constructor with all params as type String. Converts isStopOver and isRoundTrip values to required boolean format.
+	/**
+	 * Initializing constructor.
+	 * 
+	 * All attributes are initialized with input values
+	 *  
+	 * @param depart Three character code of the departure airport
+	 * @param arrival Three character code of the arrival airport
+	 * @param departureDate Date of departure
+	 * @param returnDate Date of return
+	 * @param seat Preference of seat class on the airplane
+	 * @param stop if customer wants stop overs between the origin and destination
+	 * @param round if customer wants return flight
+	 * 
+	 */
 	public SearchFlights(String depart, String arrival, String departureDate, String returnDate, String seat, String stop, String round) {
 		boolean tmpStop, tmpRound;
 		if(stop.equals("yes") || stop.equals("y")) {
@@ -87,7 +122,7 @@ public class SearchFlights {
 	/**
 	 * Set the departure airport code
 	 * 
-	 * @param  mDepartureAirportCode Three character code of the departure airport
+	 * @param  departure Three character code of the departure airport
 	 */
 	public void departureAirportCode (String departure) {
 		mDepartureAirportCode = departure;
@@ -105,7 +140,7 @@ public class SearchFlights {
 	/**
 	 * Set the arrival airport code
 	 * 
-	 * @param  mArrivalAirportCode Three character code of the arrival airport
+	 * @param  arrival Three character code of the arrival airport
 	 */
 	public void arrivalAirportCode (String arrival) {
 		mArrivalAirportCode = arrival;
@@ -123,7 +158,7 @@ public class SearchFlights {
 	/**
 	 * Set the departure date
 	 * 
-	 * @param mDepartureDate Date of departure
+	 * @param date Date of departure
 	 */
 	
 	public void departureDate (String date) {
@@ -142,7 +177,7 @@ public class SearchFlights {
 	/**
 	 * Set the return date
 	 * 
-	 * @param mReturnDate Date of return
+	 * @param date Date of return
 	 */
 	
 	public void returnDate (String date) {
@@ -161,7 +196,7 @@ public class SearchFlights {
 	/**
 	 * Set the preference seat
 	 * 
-	 * @param mDepartureDate Preference of seat class on the airplane
+	 * @param seat Preference of seat class on the airplane
 	 */
 	
 	public void seatPreference (String seat) {
@@ -180,7 +215,7 @@ public class SearchFlights {
 	/**
 	 * Set the if there is stop between the departure and arrival airport
 	 * 
-	 * @param isStopOver if there is stop between the departure and arrival airport
+	 * @param stop if there is stop between the departure and arrival airport
 	 */
 	
 	public void stopOver (boolean stop) {
@@ -211,13 +246,18 @@ public class SearchFlights {
 	/**
 	 * Set the if it is one way trip or round way trip
 	 * 
-	 * @param isRoundTrip if there is stop between the departure and arrival airport
+	 * @param round if there is stop between the departure and arrival airport
 	 */
 	
 	public void roundTrip (boolean round) {
 		isRoundTrip = round;
 	}
 	
+	/**
+	 * Set the if it is one way trip or round way trip
+	 * 
+	 * @param round if there is stop between the departure and arrival airport
+	 */
 	public void roundTrip (String round) {
 		boolean tmpRound;
 		round.toLowerCase();
@@ -239,6 +279,12 @@ public class SearchFlights {
 		return isRoundTrip;
 	}
 	
+	/**
+	 * This method will get the search result from SearchFlight class, it will check if customer wants return trip before search the return flights
+	 * 
+	 * @return list of reservations that contain matched flights, it may be either one way trip or round way trip
+	 * @throws ParseException if the date parsing fails
+	 */
 	public List<Reservations> getSearchResult() throws ParseException {
 		List<Reservations> result = new ArrayList<Reservations>();
 		SearchFlight outbound = new SearchFlight(mDepartureAirportCode, mArrivalAirportCode, mDepartureDate, mSeatPreference, isStopOver);

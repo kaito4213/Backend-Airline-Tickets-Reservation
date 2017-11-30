@@ -44,9 +44,6 @@ public class SearchFlight {
 	 * 
 	 * Constructor without params. Requires object fields to be explicitly
 	 * set using setter methods
-	 * 
-	 * @pre None
-	 * @post member attributes are initialized to invalid default values
 	 */	
 	public SearchFlight() {
 		mDepartureAirportCode = "";
@@ -63,16 +60,12 @@ public class SearchFlight {
 	 * 
 	 * All attributes are initialized with input values
 	 *  
-	 * @param mDepartureAirportCode Three character code of the departure airport
-	 * @param mArrivalAirportCode Three character code of the arrival airport
-	 * @param mDepartureDate Date of departure
-	 * @param mSeatPreference Preference of seat class on the airplane
-	 * @param mStopOver Number of stopOver from departure to arrival
+	 * @param departure Three character code of the departure airport
+	 * @param arrival Three character code of the arrival airport
+	 * @param date Date of departure
+	 * @param seat Preference of seat class on the airplane
+	 * @param stop Number of stopOver from departure to arrival
 	 * 
-	 * @pre mDepartureAirportCode and mArrivalAirportCode are 3 character strings, 
-	 * mDepartureDate and mSeatPreference are not empty, mStopOver is a valid value
-	 * @post member attributes are initialized with input parameter values
-	 * @throws IllegalArgumentException is any parameter is invalid
 	 */
 	public SearchFlight (String departure, String arrival, String date, String seat, boolean stop) {
 		mDepartureAirportCode = departure;
@@ -118,7 +111,7 @@ public class SearchFlight {
 	
 	
 	/**
-	 * Convert object to printable string of format "........"(TODO)
+	 * Convert object to printable string 
 	 * 
 	 * @return the object formatted as String to display
 	 */
@@ -252,7 +245,7 @@ public class SearchFlight {
 	 * This method check if the connected flight is valid. It will both check seats and lay over time.
 	 * @param lastFlight represents the first flight arrives at the airport
 	 * @param nextFlight represents the second flight departs from the airport
-	 * @return
+	 * @return true if connected flight is valid, false if connected flight is invalid
 	 * @throws ParseException if the date parsing fails
 	 */
 	public boolean checkValidConnectedFlight(Flight lastFlight, Flight nextFlight) throws ParseException {
@@ -266,6 +259,7 @@ public class SearchFlight {
 	 * This method search all the flights that satisfies user requirement
 	 * 
 	 * @return list of Flights depart from mDepartureAirportCode and arrive at mArrivalAirportCode on mDepartureDate
+	 * @throws ParseException if the date parsing fails
 	 */
 	public List<Flights> search() throws ParseException {
 		int stop = 0;
@@ -327,10 +321,7 @@ public class SearchFlight {
 			currentFlightsQ = nextFlightsQ;
 			stop++;		
 		}
-		
-		for (Flights f : result){
-			System.out.println(f);
-		}
+
 		return result;
 	}	
 }

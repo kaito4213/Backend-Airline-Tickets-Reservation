@@ -8,6 +8,11 @@ import java.util.Comparator;
 public class Reservations extends ArrayList<Reservation> {
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * This method sort the reservations by total cost from smallest to largest
+	 * 
+	 * @param reservations all matched flights from departure airport to arrival airport
+	 */
 	public void sortbyTotalPrice(Reservations reservations){
 		
 		 Comparator<Reservation> comparator = new Comparator<Reservation>(){
@@ -21,7 +26,12 @@ public class Reservations extends ArrayList<Reservation> {
 		 
 			 Collections.sort(reservations, comparator);
 	}
-
+	
+	/**
+	 * This method sort the reservations by total flight time from smallest to largest, layover time is also included
+	 * 
+	 * @param reservations all matched flights from departure airport to arrival airport
+	 */
 	public void sortbyTotalFlightTime(Reservations reservations){
 		
 		Comparator<Reservation> comparator = new Comparator<Reservation>(){
@@ -35,7 +45,11 @@ public class Reservations extends ArrayList<Reservation> {
 			Collections.sort(reservations, comparator);
 	}	     
 	
-	
+	/**
+	 * This method sort the reservations by departure time from earliest to latest
+	 * 
+	 * @param reservations all matched flights from departure airport to arrival airport
+	 */
 	public void sortbyDepartureTime(Reservations  reservations){
 		 
 		Comparator<Reservation> comparator = new Comparator<Reservation>(){
@@ -50,6 +64,11 @@ public class Reservations extends ArrayList<Reservation> {
 		Collections.sort(reservations, comparator);
 	}
 	
+	/**
+	 * This method sort the reservations by arrival time from earliest to latest
+	 * 
+	 * @param reservations all matched flights from departure airport to arrival airport
+	 */
 	public void sortbyArrivalTime(Reservations reservations){
 		 
 		Comparator<Reservation> comparator = new Comparator<Reservation>(){

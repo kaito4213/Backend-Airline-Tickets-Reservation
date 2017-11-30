@@ -80,6 +80,8 @@ public class Reservation implements Comparable<Reservation>{
 	}
 	
 	/**
+	 * This method return departure time
+	 * 
 	 * @return departure time in LocalDateTime format
 	 */
 	public LocalDateTime getDepartureAirportTime() {
@@ -93,7 +95,9 @@ public class Reservation implements Comparable<Reservation>{
 	}
 	
 	/**
-	 * @return departure time in LocalDateTime format
+	 * This method return arrival time
+	 * 
+	 * @return Arrival time in LocalDateTime format
 	 */
 	public LocalDateTime getArrivalAirportTime() {
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy MMM d HH:mm z", Locale.US);
@@ -106,6 +110,8 @@ public class Reservation implements Comparable<Reservation>{
 	}
 	
 	/**
+	 * This method format time to hh:mm format
+	 * 
 	 * @return total flight time in hh:mm format
 	 */
 	public String totalTimeString() {
@@ -154,7 +160,10 @@ public class Reservation implements Comparable<Reservation>{
 		return sb.toString();
 	}
 	
-	//Show the detailed information as for a confirmation for the user
+	/**Show the detailed information as for a confirmation for the user
+	 * 
+	 * @return string concludes detail flight infomation
+	 */
 	public String details() {
 		StringBuffer sb = new StringBuffer();
 		for (int i=0; i< legs.size(); i++) {
@@ -191,7 +200,7 @@ public class Reservation implements Comparable<Reservation>{
 	}
 	
 	/**
-	 * This method will make reservation of all flight in legs
+	 * This method will make reservation for all flight in legs
 	 */
 	public void confirmReservation() {
 		ServerInterface.INSTANCE.unlock(mTeamName);
