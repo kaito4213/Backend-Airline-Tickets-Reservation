@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+
 import model.airport.Airport;
 import model.airport.Airports;
 
@@ -184,10 +186,10 @@ public class Flight {
 	public String formattedLocalTime(String timeZone,String sDate) throws ParseException {
 		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
 		
-	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z").parse(sDate);  
+	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z",Locale.US).parse(sDate);  
 		calendar.setTime(date);
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm z",Locale.US);
 		formatter.setTimeZone(TimeZone.getTimeZone(timeZone));
 		String time = formatter.format(calendar.getTime());
 		return time;
