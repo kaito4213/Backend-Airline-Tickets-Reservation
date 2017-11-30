@@ -322,12 +322,6 @@ public class SearchFlight {
 			stop++;		
 		}
 		
-		for (Flights f : result) {
-			//System.out.println(f);
-			for (Flight flight : f) {
-				System.out.println(flight.toString());
-			}
-		}
 		return result;
 	}	
 }

@@ -1,5 +1,6 @@
 package model.reservation;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -116,22 +117,34 @@ public class Reservation implements Comparable<Reservation>{
 	//Show the information for this reservation
 	public String toString() {
 		String departureAirport = legs.get(0).getDepartureAirport();
-		String departureAirportTime = legs.get(0).getDepartureAirportTime();
 		String arrivalAirport = legs.get(legs.size() - 1).getArrivalAirport();
-		String arrivalAirportTime = legs.get(legs.size() - 1).getArrivalAirportTime();
-		//-----
 		int deptcode = legs.get(0).getNumber();
 		int arrivalcode = legs.get(legs.size() - 1).getNumber();
 		
+		String departureAirportTime = " ";
+		try {
+			departureAirportTime = legs.get(0).getLocalDepTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String arrivalAirportTime = "";
+		try {
+			arrivalAirportTime = legs.get(legs.size() - 1).getLocalArrTime();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		StringBuffer sb = new StringBuffer();	
-		sb.append("Index: ").append(index).append(", ");
-		//----
-		sb.append("depart flight number: ").append(deptcode).append(", ");
+		sb.append("Index: ").append(index).append("\n");
+		sb.append("Flight number: ").append(deptcode).append(", ");
 		sb.append("Departure: ").append(departureAirport).append(", ");
-		sb.append(departureAirportTime).append(", ");
-		sb.append("arrival flight number: ").append(arrivalcode).append(", ");
+		sb.append(departureAirportTime).append("\n");
+		sb.append("Flight number: ").append(arrivalcode).append(", ");
 		sb.append("Arrival: ").append(arrivalAirport).append(", ");
-		sb.append(arrivalAirportTime).append(", ");
+		sb.append(arrivalAirportTime).append("\n");
 		sb.append("Duration: ").append(totalTimeString()).append(", ");
 		sb.append("Price: ").append(totalPrice).append(", ");
 		sb.append("stop over: ").append(legs.size()).append("\n");
@@ -178,15 +191,9 @@ public class Reservation implements Comparable<Reservation>{
 	 * This method will make reservation of all flight in legs
 	 */
 	public void confirmReservation() {
-		for (Flight leg : legs) {
-			System.out.println("first class: " + leg.getFirstClassBooked() + " coach, " + leg.getCoachBooked());
-		}
 		ServerInterface.INSTANCE.unlock(mTeamName);
 		ServerInterface.INSTANCE.lock(mTeamName);
 		ServerInterface.INSTANCE.postFlights(mTeamName, this);
-		for (Flight leg : legs) {
-			System.out.println("first class: " + leg.getFirstClassBooked() + " coach, " + leg.getCoachBooked());
-		}
 	}
 	
 }

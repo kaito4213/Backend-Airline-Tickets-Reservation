@@ -12,7 +12,7 @@ public class ReservationView {
 	
 	public void makeReservation() {
 		
-		System.out.println("please confirm the reservation numnber: ");
+		System.out.println("***************please confirm the reservation numnber***************");
 		
 		Scanner scan= new Scanner(System.in);
 		String input = scan.nextLine();
@@ -21,7 +21,7 @@ public class ReservationView {
 	}
 	
 	public void showReservation(String reservation) {
-		System.out.println("your reservation is: ");
+		System.out.println("***************your reservation is***************");
 		System.out.println(reservation);
 	}
 	

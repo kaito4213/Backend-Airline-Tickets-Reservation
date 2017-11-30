@@ -61,7 +61,7 @@ public class InputView {
 		String input;
 		
 		do {
-			System.out.println("Please input your departure airport code: ");
+			System.out.println("***************Please input your departure airport code***************");
 			input = scan.nextLine();
 			departureAirportCode(input);
 			}while(!Airport.isValidInputCode(input));
@@ -75,7 +75,7 @@ public class InputView {
 		String input;
 		
 		do {
-			System.out.println("please input your arrival airport code: ");
+			System.out.println("***************please input your arrival airport code***************");
 			input = scan.nextLine();
 			arrivalAirportCode(input);
 			}while(!Airport.isValidInputCode(input));
@@ -91,7 +91,7 @@ public class InputView {
 		
 		do {
 			
-			System.out.println("Please input your departure date in the format of mm/dd/yyyy: ");
+			System.out.println("**********Please input your departure date in the format of mm/dd/yyyy*********** ");
 			input = scan.nextLine();
 			parsedInput = checkValidDate(input);
 			
@@ -115,7 +115,7 @@ public class InputView {
 		
 		do {
 			
-			System.out.println("Please input your return date in the format of mm/dd/yyyy: ");
+			System.out.println("*************Please input your return date in the format of mm/dd/yyyy*************");
 			input = scan.nextLine();
 			parsedInput = checkValidDate(input);
 			dateValid = ensureRetAfterDep(parsedInput);		
@@ -196,7 +196,7 @@ public class InputView {
 		boolean validClass = false;
 		
 		do {
-			System.out.println("Please input your preference seat (First Class/Coach): ");
+			System.out.println("***************Please input your preference seat (First Class/Coach)***************");
 			input = scan.nextLine();
 			
 			if (input.toUpperCase().equals("COACH")) {
@@ -218,7 +218,7 @@ public class InputView {
 		String input;
 		boolean validStopOver = false;
 		do {
-			System.out.println("Do you want to have stopover between the departure and destination(yes/no): ");
+			System.out.println("*********Do you want to have stopover between the departure and destination(yes/no)*********");
 			input = scan.nextLine();
 
 			if (input.toUpperCase().equals("NO") || input.toUpperCase().equals("YES")) {
@@ -237,7 +237,7 @@ public class InputView {
 		boolean validRoundTrip = false;
 		
 		do {
-			System.out.println("Do you want a round trip(yes/no): ");
+			System.out.println("***************Do you want a round trip(yes/no)***************");
 			input = scan.nextLine();
 			
 			if (input.toUpperCase().equals("NO") || input.toUpperCase().equals("YES")) {
