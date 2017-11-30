@@ -207,6 +207,12 @@ public class SearchFlight {
 	}
 	
 	/**
+	 * This method converts local time to GMT time
+	 * 
+	 * @param String in "yyyy_MM_dd" format.
+	 */
+	
+	/**
 	 * This method copy current Flights object to a new Flights object and add new flight into the copy one
 	 * 
 	 * @param flights current flights object
@@ -322,6 +328,9 @@ public class SearchFlight {
 			stop++;		
 		}
 		
+		for (Flights f : result){
+			System.out.println(f);
+		}
 		return result;
 	}	
 }

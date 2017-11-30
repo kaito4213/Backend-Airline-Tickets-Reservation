@@ -25,6 +25,7 @@ public class Reservation implements Comparable<Reservation>{
 	 * @param flights a list of flights 
 	 * @param SeatType a String "Coach" or "FirstClass" indicate 
 	 * 		  which kind of seat is preferred 
+	 * @param index unique index for each reservation
 	 */
 	public Reservation(Flights flights, String SeatType, int index) {
 		this.index = index;
@@ -114,7 +115,9 @@ public class Reservation implements Comparable<Reservation>{
 	}
 
 	
-	//Show the information for this reservation
+	/**
+	 * Show the information for this reservation
+	 */
 	public String toString() {
 		String departureAirport = legs.get(0).getDepartureAirport();
 		String arrivalAirport = legs.get(legs.size() - 1).getArrivalAirport();

@@ -156,13 +156,34 @@ public class Flight {
 	}
 	
 	/**
+	 * Returns time zone
+	 * 
+	 * @return time zone
+	 */
+	public String getLocalTimeZone() throws ParseException {
+		Airport arrAirport = null;
+
+		// Get time zone for arriving airport
+		for(Airport airport : Airports.getInstance()) {
+			String airportCode = airport.code();
+	        if(airportCode.equals(departureAirport)) {
+	            arrAirport = airport;
+	            break;
+	        }
+	    }
+	
+		return arrAirport.timezone();
+	}
+	
+	
+	/**
 	 * Returns any time in local time
 	 * 
 	 * @return any time in local time
 	 */
 	public String formattedLocalTime(String timeZone,String sDate) throws ParseException {
 		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
-
+		
 	    Date date = new SimpleDateFormat("yyyy MMM dd HH:mm z").parse(sDate);  
 		calendar.setTime(date);
 		
@@ -177,6 +198,12 @@ public class Flight {
 		
 		sb.append(number).append(", ");
 		sb.append(departureAirport).append(", ");
+		try {
+			sb.append(getLocalTimeZone()).append(", ");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			sb.append(getLocalDepTime()).append("\n ");
 		} catch (ParseException e) {
