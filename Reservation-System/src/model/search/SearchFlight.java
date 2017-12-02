@@ -149,7 +149,31 @@ public class SearchFlight {
 		
 		return bookedSeat >= availableSeat ? false : true;
 	}
-	
+
+	/**
+	 * This method checks if a flight departs during the correct day after 
+	 * local time conversion
+	 * 
+	 * @param flight in question
+	 * @return true if date of flight is correct date when converted to local time
+	 * @throws ParseException if the date parsing fails
+	 */
+	public boolean isLocalTimeSameDay(Flight flight) throws ParseException {
+		String depDay = flight.getLocalDepTime();
+		
+		// check days
+		String[] tokens1 = depDay.split(" ");
+		int day1 = Integer.parseInt(tokens1[2]);
+		String[] tokens2 = mDepartureDate.split("_");
+		int day2 = Integer.parseInt(tokens2[2]);
+		
+		if (day1==day2) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	
 	/**
 	 * This method adds one day to date given as the parameter.
@@ -276,6 +300,9 @@ public class SearchFlight {
 		//check flight from mDepartureAirportCode on mDepartureDate, if there is any available seat.
 		for (Flight flight : flights) {
 			if (!isAvailableSeat(flight)) {
+				continue;			
+			}
+			if (!isLocalTimeSameDay(flight)) {
 				continue;			
 			}
 			

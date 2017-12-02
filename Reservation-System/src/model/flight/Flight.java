@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.GregorianCalendar;
+
 import model.airport.Airport;
 import model.airport.Airports;
 

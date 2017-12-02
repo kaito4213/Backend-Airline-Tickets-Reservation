@@ -14,7 +14,6 @@ import model.airport.Airport;
 import model.airport.Airports;
 import model.flight.*;
 
-import dao.DaoAirport;
 import model.reservation.*;
 import utils.QueryFactory;
 
@@ -78,16 +77,36 @@ public enum ServerInterface {
 	 */
 	public Flights getFlights (String teamName, String departureAirport, String departureDate) {
 
-		StringBuffer result = new StringBuffer();
-		String xmlFlights;
-		Flights flights;
+		StringBuffer result1 = new StringBuffer();
+		StringBuffer result2 = new StringBuffer();
+		String xmlFlights1, xmlFlights2;
+		Flights flights1, flights2, flightsUnion = new Flights();
+		String depDatePlusOne;
 
-		result = trySetup(teamName,"flight",null,departureAirport,departureDate);
-
-		xmlFlights = result.toString();
-		flights = Dao.addAllFlights(xmlFlights);
-		return flights;
+		// get flights for date
+		result1 = trySetup(teamName,"flight",null,departureAirport,departureDate);
+		xmlFlights1 = result1.toString();
+		flights1 = Dao.addAllFlights(xmlFlights1);
 		
+		// get flights for following date to accommodate local time conversion border
+		String[] tokens = departureDate.split("_");
+		int year = Integer.parseInt(tokens[0]);
+		int month = Integer.parseInt(tokens[1]);
+		int day = Integer.parseInt(tokens[2]);
+		
+		if (day != 31) {
+			day += 1;
+		}
+		depDatePlusOne = year + "_" + month + "_" + day;
+		
+		result2 = trySetup(teamName,"flight",null,departureAirport,depDatePlusOne);
+		xmlFlights2 = result2.toString();
+		flights2 = Dao.addAllFlights(xmlFlights2);
+		
+		flightsUnion.addAll(flights1);
+		flightsUnion.addAll(flights2);
+		
+		return flightsUnion;
 	}
 	
 	/**
@@ -204,10 +223,6 @@ public enum ServerInterface {
 			writer.writeBytes(params);
 			writer.flush();
 			writer.close();
-			
-			int responseCode = connection.getResponseCode();
-			//System.out.println("\nSending 'POST' to lock database");
-			//System.out.println(("\nResponse Code : " + responseCode));
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line;
