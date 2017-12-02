@@ -169,7 +169,7 @@ public class SearchFlight {
 	 * @throws ParseException is thrown when the date parsing fails
 	 */
 	public boolean isValidStopOver(String arrivalTime,String departureTime) throws ParseException{
-		DateTimeFormatter mformatter = DateTimeFormatter.ofPattern("yyyy MMM d HH:mm z");
+		DateTimeFormatter mformatter = DateTimeFormatter.ofPattern("yyyy MMM d HH:mm z",Locale.US);
 		
 		LocalDateTime departTimeLocal = LocalDateTime.parse(departureTime, mformatter);
 		LocalDateTime arrivalTimeLocal = LocalDateTime.parse(arrivalTime, mformatter);
