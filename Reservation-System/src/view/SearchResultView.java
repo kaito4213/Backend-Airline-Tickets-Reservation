@@ -2,6 +2,8 @@ package view;
 
 import java.util.List;
 import java.util.Scanner;
+
+import controller.SearchController;
 import model.reservation.Reservation;
 import model.reservation.Reservations;
 
@@ -79,19 +81,65 @@ public class SearchResultView {
 		}
 	
 	public int setOutboundReservation() {
+		
 		String input;
+		String confirmation;
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("***************please select your outbound flights***************");
-		input = scanner.nextLine();
-		return Integer.parseInt(input);	
+		boolean validInput = true;
+		
+		do {
+			System.out.println("***************Do you want to make reservation right now?(yes/no)***************");
+			input = scanner.nextLine();
+			
+			if (input.toUpperCase().equals("YES")) {
+				validInput = true;
+				System.out.println("***************please select your OUTBOUND flights***************");
+				input = scanner.nextLine();
+				System.out.println("***************Are you sure to book this flight?***************");
+				confirmation = scanner.nextLine();
+				if (confirmation.toUpperCase().equals("YES")) {
+					return Integer.parseInt(input);	
+				} else {
+					continue;
+				}
+			}
+			else if (input.toUpperCase().equals("NO")) {
+				validInput = false;
+			}
+		}while(validInput);
+		
+		return 0;
+		
 	}
 	
 	public int setInboundReservation() {
 		String input;
+		String confirmation;
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("***************please select your inbound flights***************");
-		input = scanner.nextLine();
-		return Integer.parseInt(input);	
+		boolean validInput = true;
+		
+		do {
+			System.out.println("***************Do you want to make reservation right now?(yes/no)***************");
+			input = scanner.nextLine();
+			
+			if (input.toUpperCase().equals("YES")) {
+				validInput = true;
+				System.out.println("***************please select your INBOUND flights***************");
+				input = scanner.nextLine();
+				System.out.println("***************Are you sure to book this flight?***************");
+				confirmation = scanner.nextLine();
+				if (confirmation.toUpperCase().equals("YES")) {
+					return Integer.parseInt(input);	
+				} else {
+					continue;
+				}
+			}
+			else if (input.toUpperCase().equals("NO")) {
+				validInput = false;
+			}
+		}while(validInput);
+		
+		return 0;
 	}
 	
 	/**
