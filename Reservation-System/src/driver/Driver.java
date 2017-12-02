@@ -1,29 +1,17 @@
 package driver;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.Scanner;
 
 import controller.SearchController;
 import dao.ServerInterface;
+import model.airport.Airport;
 
 
 
 public class Driver {
 	
 	public static void main(String[] args) throws ParseException {
-		/**
-		if (args.length != 1) {
-			System.err.println("usage: CS509.sample teamName");
-			System.exit(-1);
-			return;
-		}
-		*/
 		
 		// import Airports
 		ServerInterface.INSTANCE.getAirports("Muse");
@@ -32,7 +20,24 @@ public class Driver {
 		ServerInterface.INSTANCE.getAirplanes("Muse");
 		
 		// Begin search
-		new SearchController();
+		String input;
+		Scanner scan = new Scanner(System.in);
+		boolean validInput = false;
+		
+		do {
+			System.out.println("***************Do you want to start a new search?(yes/no)***************");
+			input = scan.nextLine();
+			
+			if (input.toUpperCase().equals("YES")) {
+				validInput = true;
+				new SearchController();
+			}
+			else if (input.toUpperCase().equals("NO")) {
+				System.out.println("**********Thanks for your visiting!***********");
+				System.exit(-1);
+			}
+		}while(validInput);
+		
 	}
 }
 
