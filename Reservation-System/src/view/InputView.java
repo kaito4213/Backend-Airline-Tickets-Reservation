@@ -23,8 +23,6 @@ public class InputView {
 	 * Constructor without params. Requires object fields to be explicitly
 	 * set using setter methods
 	 * 
-	 * @pre None
-	 * @post member attributes are initialized to invalid default values
 	 */	
 	public InputView () {
 		inputDepartureAirportCode = "";
@@ -36,6 +34,9 @@ public class InputView {
 		inputIsRoundTrip = "";
 	}
 	
+	/**
+	 * get user input search information
+	 */
 	public void setUserSearchInput() {
 		Scanner scan = new Scanner(System.in);
 
@@ -55,7 +56,7 @@ public class InputView {
 	
 	/**
 	 * Request departure airport and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidDepAirport(Scanner scan) {
 		String input;
@@ -69,7 +70,7 @@ public class InputView {
 	
 	/**
 	 * Request arrival airport and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidArrAirport(Scanner scan) {
 		String input;
@@ -83,7 +84,7 @@ public class InputView {
 	
 	/**
 	 * Request departure date and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidDepDate(Scanner scan) {
 		String input, parsedInput;
@@ -106,7 +107,7 @@ public class InputView {
 	
 	/**
 	 * Request return date and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidRetDate(Scanner scan) {
 		String input, parsedInput;
@@ -130,7 +131,7 @@ public class InputView {
 
 	/**
 	 * Ensures return date is after departure date
-	 * 
+	 * @param retDate return date
 	 * @return true if valid return date, false if invalid
 	 */
 
@@ -165,7 +166,7 @@ public class InputView {
 
 	/**
 	 * Verifies that date input matches input format and is within range
-	 * 
+	 * @param input customer input of date
 	 * @return formatted date for get request or null if invalid
 	 */
 	public String checkValidDate(String input) {
@@ -189,7 +190,7 @@ public class InputView {
 	
 	/**
 	 * Request first class or coach and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidClass(Scanner scan) {
 		String input;
@@ -212,7 +213,7 @@ public class InputView {
 	
 	/**
 	 * Request stop over yes/no and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidStopOver(Scanner scan) {
 		String input;
@@ -230,7 +231,7 @@ public class InputView {
 	
 	/**
 	 * Request round trip yes/no and set if valid
-	 * 
+	 * @param scan scanner that read customers' input from keyboard
 	 */
 	public void requestValidRoundTrip(Scanner scan) {
 		String input;
@@ -258,7 +259,7 @@ public class InputView {
 	
 	/**
 	 * get the input of departure airport
-	 * @return 
+	 * @return 3 unique departure airport code
 	 * 
 	 */
 	public String getDepartureAirportCode () {
@@ -277,7 +278,7 @@ public class InputView {
 	
 	/**
 	 * get the input of arrival airport
-	 * @return 
+	 * @return 3 unique arrival airport code
 	 * 
 	 */
 	public String getArrivalAirportCode () {
@@ -295,6 +296,7 @@ public class InputView {
 	
 	/**
 	 * get the input of departure date
+	 * @return departure date
 	 * 
 	 */
 	public String getDepartureDate () {
@@ -304,7 +306,7 @@ public class InputView {
 	/**
 	 * set the input of return date
 	 * 
-	 * @param departureDate The input of departure date
+	 * @param returnDate The input of return date
 	 */
 	public void returnDate (String returnDate) {
 		inputReturnDate = returnDate;		
@@ -312,6 +314,7 @@ public class InputView {
 	
 	/**
 	 * get the input of return date
+	 * @return return date
 	 * 
 	 */
 	public String getReturnDate () {
@@ -329,6 +332,7 @@ public class InputView {
 	
 	/**
 	 * get the seat preference
+	 * @return seat preference
 	 */
 	
 	public String getSeatPreference() {
@@ -346,6 +350,7 @@ public class InputView {
 	
 	/**
 	 * get the input of stopOver
+	 * @return if customer want any stop over
 	 */
 	
 	public String getHasStopOver() {
@@ -363,6 +368,7 @@ public class InputView {
 	
 	/**
 	 * get the input of round trip
+	 * @return if customer wants round trip
 	 */
 	
 	public String getIsRoundTrip() {

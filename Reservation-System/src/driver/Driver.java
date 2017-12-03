@@ -8,7 +8,14 @@ import dao.ServerInterface;
 import model.airport.Airport;
 
 
-
+/**
+ * This class start a new search that will allow customers to reserve one way trips or round trips by 
+ * searching the departure airport, departure date, arrival airport, return date, how many lay overs
+ * and seating type. Airlines satisfying all requirement information will be returned to customers and
+ * sorted by special strategy. However, the system cannot support payment process, customer
+ * information storage or trip canceling.
+ * 
+ */
 public class Driver {
 	
 	public static void main(String[] args) throws ParseException {

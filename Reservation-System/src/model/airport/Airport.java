@@ -38,8 +38,6 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	 * Constructor without params. Requires object fields to be explicitly
 	 * set using setter methods
 	 * 
-	 * @pre None
-	 * @post member attributes are initialized to invalid default values
 	 */	
 	public Airport () {
 		mName = "";
@@ -58,8 +56,6 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	 * @param latitude The north/south coordinate of the airport 
 	 * @param longitude The east/west coordinate of the airport
 	 * 
-	 * @pre code is a 3 character string, name is not empty, latitude and longitude are valid values
-	 * @post member attributes are initialized with input parameter values
 	 * @throws IllegalArgumentException is any parameter is invalid
 	 */
 	public Airport (String name, String code, double latitude, double longitude) {
@@ -87,8 +83,6 @@ public class Airport implements Comparable<Airport>, Comparator<Airport> {
 	 * @param latitude is the string representation of latitude decimal format 
 	 * @param longitude is the String representation of the longitude in decimal format
 	 * 
-	 * @pre the latitude and longitude are valid String representations of valid lat/lon values
-	 * @post member attributes are initialized with input parameter values
 	 * @throws IllegalArgumentException is any parameter is invalid
 	 */
 	public Airport (String name, String code, String latitude, String longitude) {

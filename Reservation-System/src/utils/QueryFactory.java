@@ -20,12 +20,6 @@ public class QueryFactory {
 		return "?team=" + teamName + "&action=list&list_type=airports";
 	}
 	
-	/**
-	 * Lock the server database so updates can be written
-	 * 
-	 * @param teamName is the name of the team to acquire the lock
-	 * @return the String written to HTTP POST to lock server database 
-	 */
 	
 	/**
 	 * Return a query string that can be passed to HTTP URL to request list of airports
@@ -37,10 +31,25 @@ public class QueryFactory {
 		return "?team=" + teamName + "&action=list&list_type=departing&airport=BOS&day=2017_12_10";
 	}
 	
+	/**
+	 * Return a query string that can be passed to HTTP URL to request list of airports
+	 * 
+	 * @param teamName is the name of the team to specify the data copy on server
+	 * @param Departureairport three unique code of departure airport
+	 * @return the query String which can be appended to URL to form HTTP GET request
+	 */
 	public static String getFlights(String teamName, String Departureairport) {
 		return "?team=" + teamName + "&action=list&list_type=departing&airport=" + Departureairport;
 	}
 	
+	/**
+	 * Return a query string that can be passed to HTTP URL to request list of airports
+	 * 
+	 * @param teamName is the name of the team to specify the data copy on server
+	 * @param Departureairport three unique code of departure airport
+	 * @param date departure date in "mm_dd_yyyy" format
+	 * @return the query String which can be appended to URL to form HTTP GET request
+	 */
 	public static String getFlights(String teamName, String Departureairport, String date) {
 		return "?team=" + teamName + "&action=list&list_type=departing&airport=" + Departureairport 
 				+ "&day=" + date;
@@ -69,6 +78,12 @@ public class QueryFactory {
 	           longitude + "&timestamp=1331161200&key=AIzaSyAA4hXXyr4fzABw0Kj66PcsCU5uAGkc2Fw";
 	}
 	
+	/**
+	 * Lock the server database so updates can be written
+	 * 
+	 * @param teamName is the name of the team to acquire the lock
+	 * @return the String written to HTTP POST to lock server database 
+	 */
 	public static String lock (String teamName) {
 		return "team=" + teamName + "&action=lockDB";
 	}

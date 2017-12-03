@@ -40,11 +40,8 @@ public class DaoAirport {
 	 * the Airports collection.
 	 * 
 	 * @param xmlAirports XML string containing set of airports 
-	 * @return [possibly empty] collection of Airports in the xml string
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
 	 * 
-	 * @pre the xmlAirports string adheres to the format specified by the server API
-	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public static void addAll (String xmlAirports) throws NullPointerException {
 		
@@ -70,7 +67,6 @@ public class DaoAirport {
 	 * @param nodeAirport is a DOM Node describing an Airport
 	 * @return Airport object created from the DOM Node representation of the Airport
 	 * 
-	 * @pre nodeAirport is of format specified by CS509 server API
 	 */
 	static private Airport buildAirport (Node nodeAirport) {
 		/**

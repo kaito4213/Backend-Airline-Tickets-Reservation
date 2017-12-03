@@ -25,97 +25,176 @@ public class Flight {
 	private String coachPrice;
 	
         
-    // the Flight class has
-    // one constructor
+	/**
+	 * default constructor
+	 */
     public Flight() {
         number = 0;
         departureAirport = "";
         departureAirport = "";
     }
         
-    // Flight Class Methods
+
+    /**
+	 * @param newValue the number to set
+	 */
     public void setNumber(int newValue) {
         number = newValue;
     }
+    
+    /**
+	 * @param newValue the flightTime to set
+	 */
     public void setFlightTime(int newValue) {
         flightTime = newValue;
     }
+    
+    /**
+	 * @param newValue the airplane to set
+	 */
     public void setAirplane(String newValue) {
         airplane = newValue;
     }
+    
+    /**
+	 * @param newValue the departureAirport to set
+	 */
     public void setDepartureAirport(String newValue) {
     	departureAirport = newValue;
     }
+    
+    /**
+	 * @param newValue the departureTime to set
+	 */
     public void setDepartureTime(String newValue) {
     	departureAirportTime = newValue;
     }
+    
+    /**
+	 * @param newValue the arrivalAirport to set
+	 */
     public void setArrivalAirport(String newValue) {
     	arrivalAirport = newValue;
     }
+    
+    /**
+	 * @param newValue the arrivalAirportTime to set
+	 */
     public void setArrivalTime(String newValue) {
     	arrivalAirportTime = newValue;
     }
+    
+    /**
+	 * @param newValue the firstClassBooked to set
+	 */
     public void setFirstClassBooked(int newValue) {
     	firstClassBooked = newValue;
     }
+    
+    /**
+	 * @param newValue the coachBooked to set
+	 */
     public void setCoachBooked(int newValue) {
     	coachBooked = newValue;
     }
+    
+    /**
+	 * @param newValue the firstClassPrice to set
+	 */
     public void setFirstClassPrice(String newValue) {
     	firstClassPrice = newValue;
     }
+    
+    /**
+	 * @param newValue the coachPrice to set
+	 */
     public void setCoachPrice(String newValue) {
     	coachPrice = newValue;
     }
     
+    /**
+	 * @return the number
+	 */
     public int getNumber() {
 		return number;
 	}
-
+    
+    /**
+	 * @return the flightTime
+	 */
 	public int getFlightTime() {
 		return flightTime;
 	}
-
+	
+	/**
+	 * @return the airplane
+	 */
 	public String getAirplane() {
 		return airplane;
 	}
-
+	
+	/**
+	 * @return the departureAirport
+	 */
 	public String getDepartureAirport() {
 		return departureAirport;
 	}
-
+	
+	/**
+	 * @return the departureAirportTime
+	 */
 	public String getDepartureAirportTime() {
 		return departureAirportTime;
 	}
-
+	
+	/**
+	 * @return the arrivalAirport
+	 */
 	public String getArrivalAirport() {
 		return arrivalAirport;
 	}
-
+	
+	/**
+	 * @return the arrivalAirportTime
+	 */
 	public String getArrivalAirportTime() {
 		return arrivalAirportTime;
 	}
-
+	
+	/**
+	 * @return the firstClassBooked
+	 */
 	public int getFirstClassBooked() {
 		return firstClassBooked;
 	}
-
+	
+	/**
+	 * @return the coachBooked
+	 */
 	public int getCoachBooked() {
 		return coachBooked;
 	}
-
+	
+	/**
+	 * @return the firstClassPrice
+	 */
 	public String getFirstClassPrice() {
 		return firstClassPrice;
 	}
-
+	
+	/**
+	 * @return the coachPrice
+	 */
 	public String getCoachPrice() {
 		return coachPrice;
 	}
+
 
 	/**
 	 * Returns departure time in local time
 	 * 
 	 * @return departure time in local time
+	 * @throws ParseException if the date parsing fails
 	 */
 	public String getLocalDepTime() throws ParseException {
 		Airport depAirport = null;
@@ -139,6 +218,7 @@ public class Flight {
 	 * Returns arrival time in local time
 	 * 
 	 * @return arrival time in local time
+	 * @throws ParseException if the date parsing fails
 	 */
 	public String getLocalArrTime() throws ParseException {
 		Airport arrAirport = null;
@@ -158,9 +238,10 @@ public class Flight {
 	}
 	
 	/**
-	 * Returns time zone
+	 * Returns local time zone
 	 * 
 	 * @return time zone
+	 * @throws ParseException if the date parsing fails
 	 */
 	public String getLocalTimeZone() throws ParseException {
 		Airport arrAirport = null;
@@ -180,8 +261,10 @@ public class Flight {
 	
 	/**
 	 * Returns any time in local time
-	 * 
+	 * @param timeZone local time zone of current airport
+	 * @param sDate departure date or arrival date in "yyyy MMM dd HH:mm z" format
 	 * @return any time in local time
+	 * @throws ParseException if the date parsing fails
 	 */
 	public String formattedLocalTime(String timeZone,String sDate) throws ParseException {
 		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone(timeZone));
@@ -195,6 +278,9 @@ public class Flight {
 		return time;
 	}
 
+	/**
+	 * print flight class
+	 */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		

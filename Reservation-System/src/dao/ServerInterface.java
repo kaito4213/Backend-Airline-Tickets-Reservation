@@ -38,7 +38,6 @@ public enum ServerInterface {
 	 * Retrieve the list of airports available to the specified ticketAgency via HTTPGet of the server
 	 * 
 	 * @param teamName identifies the name of the team requesting the collection of airports
-	 * @return collection of Airports from server
 	 */
 	public void getAirports (String teamName) {
 
@@ -73,6 +72,8 @@ public enum ServerInterface {
 	 * Retrieve the list of airports available to the specified ticketAgency via HTTPGet of the server
 	 * 
 	 * @param teamName identifies the name of the team requesting the collection of airports
+	 * @param departureAirport identifies 3 unique code of departure airport
+	 * @param departureDate identifies departure date in mm_dd_yyyy format
 	 * @return collection of Airports from server
 	 */
 	public Flights getFlights (String teamName, String departureAirport, String departureDate) {
@@ -138,6 +139,9 @@ public enum ServerInterface {
 	 * 
 	 * @param teamName identifies the name of the team requesting the collection of airplanes, airports, or flights
 	 * @param type identifies if airplane, airport, or flight will be returned
+	 * @param airport identifies airport 
+	 * @param departureAirport identifies 3 unique code of departure airport
+	 * @param departureDate identifies departure date in mm_dd_yyyy format
 	 * @return StringBuffer result
 	 */
 	
@@ -302,6 +306,7 @@ public enum ServerInterface {
 	 * Update server with flights to be reserved and if coach or first class
 	 * 
 	 * @param teamName is the name of the team holding the lock
+	 * @param reservation identifies the flights reserved by customer
 	 * @return true if the update was successful
 	 */
 	public boolean postFlights (String teamName, Reservation reservation) {

@@ -7,48 +7,77 @@ public class Airplane {
 	private String model;
 	private String manufacturer;
         
-    // the Airplane class has
-    // one constructor
+
+	 /**
+	 * default constructor
+	 */
     public Airplane() {
         model = "";
         manufacturer = "";
         coachSeats = 0;
         firstClassSeats = 0;
     }
-        
+     
+    /**
+ 	 * get the First Class seats
+ 	 * @return firstClassSeats
+ 	 */  
     public int getFirstClassSeats() {
 		return firstClassSeats;
 	}
-
+    
+    /**
+     * get the Coach seats
+  	 * @return coachSeats
+     */
 	public int getCoachSeats() {
 		return coachSeats;
 	}
 
+	/**
+	 * @return the model	     
+	 */    
 	public String getModel() {
 		return model;
 	}
-
+	/**
+	 * @return the manufacturer	     
+	 */ 
 	public String getManufacturer() {
 		return manufacturer;
 	}
 
-	// Airplane Class Methods
+	/**
+	 * @param newValue the firstClassSeats to set
+	 */
     public void setFirstClassSeats(int newValue) {
     	firstClassSeats = newValue;
     }
     
+	/**
+	 * @param newValue the coachSeats to set
+	 */
     public void setCoachSeats(int newValue) {
     	coachSeats = newValue;
     }
     
+	/**
+	 * @param newValue the Model to set
+	 */
     public void setModel(String newValue) {
     	model = newValue;
     }
     
+	/**
+	 * @param newValue the manufacturer to set
+	 */
     public void setManufacturer(String newValue) {
     	manufacturer = newValue;
     }
     
+    /** 
+     * print Airplane 
+     */
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		

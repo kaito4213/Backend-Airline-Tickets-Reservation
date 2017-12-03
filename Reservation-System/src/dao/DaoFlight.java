@@ -43,8 +43,6 @@ public class DaoFlight {
 	 * @return [possibly empty] collection of Flights in the xml string
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
 	 * 
-	 * @pre the xmlFlights string adheres to the format specified by the server API
-	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public static Flights addAll (String xmlFlights) throws NullPointerException {
 		Flights flights = new Flights();
@@ -73,7 +71,6 @@ public class DaoFlight {
 	 * @param nodeFlight is a DOM Node describing a Flight
 	 * @return Flight object created from the DOM Node representation of the Flight
 	 * 
-	 * @pre nodeFlight is of format specified by CS509 server API
 	 */
 	static private Flight buildFlight (Node nodeFlight) {
 		/**

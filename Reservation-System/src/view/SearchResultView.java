@@ -2,8 +2,6 @@ package view;
 
 import java.util.List;
 import java.util.Scanner;
-
-import controller.SearchController;
 import model.reservation.Reservation;
 import model.reservation.Reservations;
 
@@ -17,12 +15,20 @@ public class SearchResultView {
 	private Boolean isRoundTrip;
 	private Boolean isSorting;
 	
+	/**
+	 * constructor
+	 * @param reservations list of matched reservations including outbound and inbound if any
+	 * @param isRoundTrip if it is a round-way trip
+	 */
 	public SearchResultView(List<Reservations> reservations, Boolean isRoundTrip) {
 		this.reservations = reservations;
 		this.isRoundTrip = isRoundTrip;
 		isSorting = false;
 	}
 
+	/**
+	 * This method shows the result of search
+	 */
 	public void showSearchResult() {
 		
 		if (reservations.get(0).size() == 0) {
@@ -49,6 +55,9 @@ public class SearchResultView {
 	}
 	
 
+	/**
+	 * This method shows result of search after sorting
+	 */
 	public void showSortingResult() {
 			Scanner scan = new Scanner(System.in);
 			requestValidIsSorting(scan);
@@ -80,6 +89,10 @@ public class SearchResultView {
 			}
 		}
 	
+	/**
+	 * set outbound reservation
+	 * @return return index of selected reservation, 0 if customer didn't select any reservation
+	 */
 	public int setOutboundReservation() {
 		
 		String input;
@@ -112,6 +125,10 @@ public class SearchResultView {
 		
 	}
 	
+	/**
+	 * set inbound reservation
+	 * @return return index of selected reservation, 0 if customer didn't select any reservation
+	 */
 	public int setInboundReservation() {
 		String input;
 		String confirmation;
@@ -144,7 +161,7 @@ public class SearchResultView {
 	
 	/**
 	 * Request if needs sorting yes/no and set if valid
-	 * 
+	 * @param scan customer input
 	 */
 	public void requestValidIsSorting(Scanner scan) {
 		String input;
@@ -164,6 +181,8 @@ public class SearchResultView {
 
 	/**
 	 * Request sorting strategy and set if valid
+	 * @param scan customer input
+	 * @param results reservations that need to be sorted
 	 * 
 	 */
 	public void requestValidSorter(Scanner scan, Reservations results) {

@@ -45,8 +45,6 @@ public class Dao {
 	 * @return [possibly empty] collection of Airplanes in the xml string
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
 	 * 
-	 * @pre the xmlAirplanes string adheres to the format specified by the server API
-	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public static Airplanes addAllAirplanes (String xmlAirplanes) throws NullPointerException {
 		Airplanes airplanes = new Airplanes();
@@ -75,7 +73,6 @@ public class Dao {
 	 * @param nodeAirplane is a DOM Node describing an Airplane
 	 * @return Airplane object created from the DOM Node representation of the Airplane
 	 * 
-	 * @pre nodeAirplane is of format specified by CS509 server API
 	 */
 	static private Airplane buildAirplane (Node nodeAirplane) {
 		/**
@@ -127,8 +124,6 @@ public class Dao {
 	 * @return [possibly empty] collection of Flights in the xml string
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
 	 * 
-	 * @pre the xmlFlights string adheres to the format specified by the server API
-	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public static Flights addAllFlights (String xmlFlights) throws NullPointerException {
 		Flights flights = new Flights();
@@ -156,8 +151,7 @@ public class Dao {
 	 * Processes a DOM Node that describes a Flight and creates a Flight object from the information
 	 * @param nodeFlight is a DOM Node describing a Flight
 	 * @return Flight object created from the DOM Node representation of the Flight
-	 * 
-	 * @pre nodeFlight is of format specified by CS509 server API
+	 *
 	 */
 	static private Flight buildFlight (Node nodeFlight) {
 		/**
@@ -234,11 +228,8 @@ public class Dao {
 	 * the Airports collection.
 	 * 
 	 * @param xmlAirports XML string containing set of airports 
-	 * @return [possibly empty] collection of Airports in the xml string
 	 * @throws NullPointerException included to keep signature consistent with other addAll methods
 	 * 
-	 * @pre the xmlAirports string adheres to the format specified by the server API
-	 * @post the [possibly empty] set of Airports in the XML string are added to collection
 	 */
 	public static void addAllAirports (String xmlAirports) throws NullPointerException {
 		
@@ -264,7 +255,6 @@ public class Dao {
 	 * @param nodeAirport is a DOM Node describing an Airport
 	 * @return Airport object created from the DOM Node representation of the Airport
 	 * 
-	 * @pre nodeAirport is of format specified by CS509 server API
 	 */
 	static private Airport buildAirport (Node nodeAirport) {
 		/**
@@ -308,7 +298,6 @@ public class Dao {
 	 * 
 	 * @param xmlAirportTimeZone XML String containing set of objects
 	 * @param airport an instance of Airports
-	 * @return void
 	 */
 	public static void addAirportTimeZone(String xmlAirportTimeZone, Airport airport) throws NullPointerException {
 		// Load the XML string into a DOM tree for ease of processing
