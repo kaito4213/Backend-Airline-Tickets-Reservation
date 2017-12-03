@@ -1,3 +1,5 @@
+// Deprecated, use Dao.java instead
+
 /**
  * 
  */
