@@ -32,7 +32,7 @@ public class SearchFlight {
 	private String mSeatPreference;				// preference of seat class on the airplane
 	private boolean isStopOver;					// number of stopOver from departure to arrival
 	private final String mTeamName = "Muse";
-	private final int maxStopOver = 1;
+	private final int maxStopOver = 2;
 	private final float MIN_LAYOVER_INMINUTES = 30;
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
