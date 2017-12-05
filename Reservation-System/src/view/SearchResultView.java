@@ -88,7 +88,7 @@ public class SearchResultView {
 		boolean validInput = true;
 		
 		do {
-			System.out.println("***************Do you want to make reservation right now?(yes/no)***************");
+			System.out.println("***************Do you want to make OUTBOUND reservation right now?(yes/no)***************");
 			input = scanner.nextLine();
 			
 			if (input.toUpperCase().equals("YES")) {
@@ -96,6 +96,13 @@ public class SearchResultView {
 				System.out.println("***************please select your OUTBOUND flights***************");
 				input = scanner.nextLine();
 				System.out.println("***************Are you sure to book this flight?***************");
+				Reservations inboundList = reservations.get(1);
+				for (Reservation inboundReservation : inboundList) {
+					if (Integer.parseInt(input) == inboundReservation.getIndex()) {
+						System.out.println(inboundReservation);
+					}
+				}
+				
 				confirmation = scanner.nextLine();
 				if (confirmation.toUpperCase().equals("YES")) {
 					return Integer.parseInt(input);	
@@ -119,7 +126,7 @@ public class SearchResultView {
 		boolean validInput = true;
 		
 		do {
-			System.out.println("***************Do you want to make reservation right now?(yes/no)***************");
+			System.out.println("***************Do you want to make INBOUND reservation right now?(yes/no)***************");
 			input = scanner.nextLine();
 			
 			if (input.toUpperCase().equals("YES")) {
@@ -127,6 +134,13 @@ public class SearchResultView {
 				System.out.println("***************please select your INBOUND flights***************");
 				input = scanner.nextLine();
 				System.out.println("***************Are you sure to book this flight?***************");
+				Reservations outboundList = reservations.get(0);
+				for (Reservation outboundReservation : outboundList) {
+					if (Integer.parseInt(input) == outboundReservation.getIndex()) {
+						System.out.println(outboundReservation);
+					}
+				}
+				
 				confirmation = scanner.nextLine();
 				if (confirmation.toUpperCase().equals("YES")) {
 					return Integer.parseInt(input);	

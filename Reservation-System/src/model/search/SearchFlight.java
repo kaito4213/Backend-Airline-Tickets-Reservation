@@ -32,12 +32,15 @@ public class SearchFlight {
 	private String mSeatPreference;				// preference of seat class on the airplane
 	private boolean isStopOver;					// number of stopOver from departure to arrival
 	private final String mTeamName = "Muse";
-	private final int maxStopOver = 1;
+	private final int maxStopOver = 2;
 	private final float MIN_LAYOVER_INMINUTES = 30;
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
 	private static HashMap<String, Integer> firstClassSeatsMap;
-
+	private List<Flights> FlightMapToday = new ArrayList<Flights>();
+	private List<String> AirindexToday = new ArrayList<String>();
+	private List<Flights> FlightMapTomorrow = new ArrayList<Flights>();
+	private List<String> AirindexTomorrow = new ArrayList<String>();
 	
 	/**
 	 * Default constructor
@@ -253,6 +256,38 @@ public class SearchFlight {
 		String depart = nextFlight.getDepartureAirportTime();
 		return isValidStopOver(arrival, depart) && isAvailableSeat(nextFlight);
 	}
+
+	/**
+	 * This method returns position of possible flights in cache
+	 * 
+	 * @param String departure airport code
+	 * @return index or -1
+	 */
+	private int FindinCacheToday(String Departure) {
+		int CacheSize = AirindexToday.size();
+		for (int i = 0; i < CacheSize; i++) {
+			if(Departure ==  AirindexToday.get(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * This method returns position of possible flights in cache
+	 * 
+	 * @param String departure airport code
+	 * @return index or -1
+	 */
+	private int FindinCacheTomorrow(String Departure) {
+		int CacheSize = AirindexTomorrow.size();
+		for (int i = 0; i < CacheSize; i++) {
+			if(Departure ==  AirindexTomorrow.get(i)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 	
 	
 	/**
@@ -288,6 +323,7 @@ public class SearchFlight {
 			return result;
 		}
 		
+		
 		//search connected flights
 		while(stop < maxStopOver && !currentFlightsQ.isEmpty()) {
 			Queue<Flights> nextFlightsQ = new LinkedList<Flights>();
@@ -297,11 +333,34 @@ public class SearchFlight {
 				Flight lastFlight = currentFlights.get(currentFlights.size() - 1);
 				String nextDeparture = lastFlight.getArrivalAirport();
 				String date = dateFormatter(lastFlight.getArrivalAirportTime());	
-				Flights nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+				// if find nextflights in cache, 
+				//  	get nextflights in cache
+				// else get nextflights from server; store nextflights in cache
+
+				Flights	nextFlights;
+				int index = FindinCacheToday(nextDeparture);
+				if (index != -1) {
+						nextFlights = FlightMapToday.get(index);
+				}
+				else {
+					 nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+					FlightMapToday.add(nextFlights);
+					AirindexToday.add(nextDeparture);
+				}
 				
 				if (checkNextDay(lastFlight.getArrivalAirportTime())) {
 					String nextDay = dateFormatter(addDay(date));		
-					Flights nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
+					Flights nextDayFlights;
+					index = FindinCacheTomorrow(nextDeparture);
+					if (index != -1) {
+						nextDayFlights = FlightMapTomorrow.get(index);
+					}
+					else {
+						nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
+						FlightMapTomorrow.add(nextFlights);
+						AirindexTomorrow.add(nextDeparture);
+					}
+
 					nextFlights.addAll(nextDayFlights);
 				}		
 					

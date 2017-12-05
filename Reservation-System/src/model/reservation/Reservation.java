@@ -1,5 +1,6 @@
 package model.reservation;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,10 +49,10 @@ public class Reservation implements Comparable<Reservation>{
 		
 		for (int i = 0; i < legs.size(); i++) {			
 			if (mSeatPreference == "Coach") {
-				totalPrice += Float.parseFloat(legs.get(i).getCoachPrice().substring(1));
+				totalPrice += Float.parseFloat(legs.get(i).getCoachPrice().replaceAll("[^\\d.]+", ""));
 			}
 			else {
-				totalPrice +=  Float.parseFloat(legs.get(i).getFirstClassPrice().substring(1));
+				totalPrice +=  Float.parseFloat(legs.get(i).getFirstClassPrice().replaceAll("[^\\d.]+", ""));
 			}	 
 		}
 		
@@ -63,18 +64,20 @@ public class Reservation implements Comparable<Reservation>{
 	 * @return the total travel time from start to finish
 	 */
 	public float getTotalTime() {
+		int numLegs = legs.size();
 		travelTime = 0.0f;
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy MMM d HH:mm z", Locale.US);
-		if (legs == null || legs.size() == 0) {
+		if (legs == null || numLegs == 0) {
 			return 0.00f;
 		}
 		
-		for (Flight f : legs) {
-			LocalDateTime departTimeLocal = LocalDateTime.parse(f.getDepartureAirportTime(), dateFormat);
-			LocalDateTime arrivalTimeLocal = LocalDateTime.parse(f.getArrivalAirportTime(), dateFormat);	
-			float diffInMinutes = java.time.Duration.between(departTimeLocal, arrivalTimeLocal).toMinutes();
-			travelTime += diffInMinutes;		
-		}
+		// get start time of first leg
+		// get arrival time of last leg
+		// subtract arrival from start
+		LocalDateTime departTimeLocal = LocalDateTime.parse(legs.get(0).getDepartureAirportTime(), dateFormat);
+		LocalDateTime arrivalTimeLocal = LocalDateTime.parse(legs.get(numLegs - 1).getArrivalAirportTime(), dateFormat);	
+		float diffInMinutes = java.time.Duration.between(departTimeLocal, arrivalTimeLocal).toMinutes();
+		travelTime += diffInMinutes;		
 		
 		return travelTime;
 	}
@@ -125,14 +128,37 @@ public class Reservation implements Comparable<Reservation>{
 	 * Show the information for this reservation
 	 */
 	public String toString() {
-		String departureAirport = legs.get(0).getDepartureAirport();
-		String arrivalAirport = legs.get(legs.size() - 1).getArrivalAirport();
-		int deptcode = legs.get(0).getNumber();
-		int arrivalcode = legs.get(legs.size() - 1).getNumber();
+		int numLegs = legs.size();
+		String leg1DepAirport , leg2DepAirport = " ", leg3DepAirport = " ", arrivalAirport;
+		int deptcode1 = 0, deptcode2 = 0, deptcode3 = 0, arrivalcode = 0;
 		
-		String departureAirportTime = " ";
+		leg1DepAirport = legs.get(0).getDepartureAirport();
+		arrivalAirport = legs.get(0).getArrivalAirport();
+		
+		deptcode1 = legs.get(0).getNumber();
+		if (numLegs > 1) {
+			leg2DepAirport = legs.get(1).getDepartureAirport();
+			arrivalAirport = legs.get(1).getArrivalAirport();
+			deptcode2 = legs.get(1).getNumber();
+		}
+		if(numLegs > 2) {
+			leg3DepAirport = legs.get(2).getDepartureAirport();
+			arrivalAirport = legs.get(2).getArrivalAirport();
+			deptcode3 = legs.get(2).getNumber();
+		}
+		arrivalcode = legs.get(legs.size() - 1).getNumber();
+		
+		String departureAirportTime1 = " ";
+		String departureAirportTime2 = " ";
+		String departureAirportTime3 = " ";
 		try {
-			departureAirportTime = legs.get(0).getLocalDepTime();
+			departureAirportTime1 = legs.get(0).getLocalDepTime();
+			if (numLegs > 1) {
+				departureAirportTime2 = legs.get(1).getLocalDepTime();
+			}
+			if (numLegs > 2) {
+				departureAirportTime3 = legs.get(2).getLocalDepTime();
+			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -146,17 +172,35 @@ public class Reservation implements Comparable<Reservation>{
 			e.printStackTrace();
 		}
 		
+		// print first leg
 		StringBuffer sb = new StringBuffer();	
 		sb.append("Index: ").append(index).append("\n");
-		sb.append("Flight number: ").append(deptcode).append(", ");
-		sb.append("Departure: ").append(departureAirport).append(", ");
-		sb.append(departureAirportTime).append("\n");
-		sb.append("Flight number: ").append(arrivalcode).append(", ");
+		sb.append("Flight number: ").append(deptcode1).append(", ");
+		sb.append("Departure: ").append(leg1DepAirport).append(", ");
+		sb.append(departureAirportTime1).append("\n");
+		
+		// print second leg if any
+		if (numLegs > 1) {
+			sb.append("Flight number: ").append(deptcode2).append(", ");
+			sb.append("Departure: ").append(leg2DepAirport).append(", ");
+			sb.append(departureAirportTime2).append("\n");
+		}
+		
+		// print third leg if any
+		if (numLegs > 2) {
+			sb.append("Flight number: ").append(deptcode3).append(", ");
+			sb.append("Departure: ").append(leg3DepAirport).append(", ");
+			sb.append(departureAirportTime3).append("\n");
+		}
+		
+		DecimalFormat df = new DecimalFormat("#.00");
+	    String totalPriceFormatted = df.format(totalPrice);
+		
 		sb.append("Arrival: ").append(arrivalAirport).append(", ");
 		sb.append(arrivalAirportTime).append("\n");
 		sb.append("Duration: ").append(totalTimeString()).append(", ");
-		sb.append("Price: ").append(totalPrice).append(", ");
-		sb.append("stop over: ").append(legs.size()).append("\n");
+		sb.append("Price: $").append(totalPriceFormatted).append(", ");
+		sb.append("stop over: ").append(legs.size()-1).append("\n");
 		return sb.toString();
 	}
 	

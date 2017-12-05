@@ -147,7 +147,7 @@ public class Flight {
 		// Get time zone for arriving airport
 		for(Airport airport : Airports.getInstance()) {
 			String airportCode = airport.code();
-	        if(airportCode.equals(departureAirport)) {
+	        if(airportCode.equals(arrivalAirport)) {
 	            arrAirport = airport;
 	            break;
 	        }
