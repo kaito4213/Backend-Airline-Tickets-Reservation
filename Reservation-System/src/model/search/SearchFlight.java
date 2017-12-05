@@ -37,11 +37,10 @@ public class SearchFlight {
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
 	private static HashMap<String, Integer> firstClassSeatsMap;
-	private List<Flights> FlightMapToday = new ArrayList<Flights>();
-	private List<String> AirindexToday = new ArrayList<String>();
-	private List<Flights> FlightMapTomorrow = new ArrayList<Flights>();
-	private List<String> AirindexTomorrow = new ArrayList<String>();
 	
+	private HashMap<String, Flights> TodayFlightsMap = new HashMap<String, Flights>();
+	private HashMap<String, Flights> TomorrowFlightsMap = new HashMap<String, Flights>();
+
 	/**
 	 * Default constructor
 	 * 
@@ -257,39 +256,7 @@ public class SearchFlight {
 		return isValidStopOver(arrival, depart) && isAvailableSeat(nextFlight);
 	}
 
-	/**
-	 * This method returns position of possible flights in cache
-	 * 
-	 * @param String departure airport code
-	 * @return index or -1
-	 */
-	private int FindinCacheToday(String Departure) {
-		int CacheSize = AirindexToday.size();
-		for (int i = 0; i < CacheSize; i++) {
-			if(Departure ==  AirindexToday.get(i)) {
-				return i;
-			}
-		}
-		return -1;
-	}
 
-	/**
-	 * This method returns position of possible flights in cache
-	 * 
-	 * @param String departure airport code
-	 * @return index or -1
-	 */
-	private int FindinCacheTomorrow(String Departure) {
-		int CacheSize = AirindexTomorrow.size();
-		for (int i = 0; i < CacheSize; i++) {
-			if(Departure ==  AirindexTomorrow.get(i)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
-	
 	/**
 	 * This method search all the flights that satisfies user requirement
 	 * 
@@ -333,34 +300,27 @@ public class SearchFlight {
 				Flight lastFlight = currentFlights.get(currentFlights.size() - 1);
 				String nextDeparture = lastFlight.getArrivalAirport();
 				String date = dateFormatter(lastFlight.getArrivalAirportTime());	
-				// if find nextflights in cache, 
-				//  	get nextflights in cache
-				// else get nextflights from server; store nextflights in cache
-
 				Flights	nextFlights;
-				int index = FindinCacheToday(nextDeparture);
-				if (index != -1) {
-						nextFlights = FlightMapToday.get(index);
+				if (TodayFlightsMap.get(nextDeparture)!=null) {
+					nextFlights =  TodayFlightsMap.get(nextDeparture);
 				}
 				else {
-					 nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
-					FlightMapToday.add(nextFlights);
-					AirindexToday.add(nextDeparture);
+					nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+					TodayFlightsMap.put(nextDeparture,nextFlights);
 				}
+				
+				
 				
 				if (checkNextDay(lastFlight.getArrivalAirportTime())) {
 					String nextDay = dateFormatter(addDay(date));		
 					Flights nextDayFlights;
-					index = FindinCacheTomorrow(nextDeparture);
-					if (index != -1) {
-						nextDayFlights = FlightMapTomorrow.get(index);
+					if (TomorrowFlightsMap.get(nextDeparture)!=null) {
+						nextDayFlights =  TomorrowFlightsMap.get(nextDeparture);
 					}
 					else {
 						nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
-						FlightMapTomorrow.add(nextFlights);
-						AirindexTomorrow.add(nextDeparture);
+						TomorrowFlightsMap.put(nextDeparture,nextDayFlights);
 					}
-
 					nextFlights.addAll(nextDayFlights);
 				}		
 					
