@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
+<<<<<<< HEAD
 import dao.Dao;
+=======
+>>>>>>> 44c25429425244e93f51bb3c5c15ba8ed3fdb7c6
 import dao.ServerInterface;
 
 public class AirportTest {
@@ -39,5 +42,4 @@ public class AirportTest {
 			assertEquals(quickTimeZone,airport.timezone());
 		}
 	}
-
 }

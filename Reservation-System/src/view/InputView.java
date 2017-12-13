@@ -50,6 +50,8 @@ public class InputView {
 		if (inputIsRoundTrip.equals("yes")) {
 			requestValidRetDate(scan);
 		}
+		
+		System.out.println("***************Searching...***************");
 
 		//scan.close();
 	}

@@ -37,8 +37,10 @@ public class SearchFlight {
 	private final float MAX_LAYOVER_INMINUTES = 240;
 	private static HashMap<String, Integer> coachSeatsMap;
 	private static HashMap<String, Integer> firstClassSeatsMap;
-
 	
+	private HashMap<String, Flights> TodayFlightsMap = new HashMap<String, Flights>();
+	private HashMap<String, Flights> TomorrowFlightsMap = new HashMap<String, Flights>();
+
 	/**
 	 * Default constructor
 	 * 
@@ -277,8 +279,8 @@ public class SearchFlight {
 		String depart = nextFlight.getDepartureAirportTime();
 		return isValidStopOver(arrival, depart) && isAvailableSeat(nextFlight);
 	}
-	
-	
+
+
 	/**
 	 * This method search all the flights that satisfies user requirement
 	 * 
@@ -315,6 +317,7 @@ public class SearchFlight {
 			return result;
 		}
 		
+		
 		//search connected flights
 		while(stop < maxStopOver && !currentFlightsQ.isEmpty()) {
 			Queue<Flights> nextFlightsQ = new LinkedList<Flights>();
@@ -324,11 +327,27 @@ public class SearchFlight {
 				Flight lastFlight = currentFlights.get(currentFlights.size() - 1);
 				String nextDeparture = lastFlight.getArrivalAirport();
 				String date = dateFormatter(lastFlight.getArrivalAirportTime());	
-				Flights nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+				Flights	nextFlights;
+				if (TodayFlightsMap.get(nextDeparture)!=null) {
+					nextFlights =  TodayFlightsMap.get(nextDeparture);
+				}
+				else {
+					nextFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, date);
+					TodayFlightsMap.put(nextDeparture,nextFlights);
+				}
+				
+				
 				
 				if (checkNextDay(lastFlight.getArrivalAirportTime())) {
 					String nextDay = dateFormatter(addDay(date));		
-					Flights nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
+					Flights nextDayFlights;
+					if (TomorrowFlightsMap.get(nextDeparture)!=null) {
+						nextDayFlights =  TomorrowFlightsMap.get(nextDeparture);
+					}
+					else {
+						nextDayFlights = ServerInterface.INSTANCE.getFlights(mTeamName, nextDeparture, nextDay);
+						TomorrowFlightsMap.put(nextDeparture,nextDayFlights);
+					}
 					nextFlights.addAll(nextDayFlights);
 				}		
 					
