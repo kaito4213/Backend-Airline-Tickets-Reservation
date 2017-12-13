@@ -19,6 +19,8 @@ This project is designed by using MVC architecture and implemented byb JAVA.
 ![model](https://github.com/kaito4213/Muse/blob/master/model.PNG)
 
 ## Verification
-
+This demostration shows the result of search from BOS to JFK on 12/10/2017
+![img](https://github.com/kaito4213/Muse/blob/master/img/search.png)
+![img](https://github.com/kaito4213/Muse/blob/master/img/sort.png)
 
 
